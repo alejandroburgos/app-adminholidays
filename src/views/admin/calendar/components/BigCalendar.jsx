@@ -1,17 +1,15 @@
 import React, { useState } from "react";
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/sass/styles.scss';
-import "assets/css/MiniCalendar.css";
-
 import { Text, Icon, Button } from "@chakra-ui/react";
-// Chakra imports
-import { MdChevronLeft, MdChevronRight } from "react-icons/md";
+
 // Custom components
 import Card from "components/card/Card.js";
 import moment from "moment";
 import 'moment/locale/es';
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-export default function MiniCalendar(props) {
+
+export default function BigCalendar(props) {
   const {events, ...rest } = props;
 
   const localizer = momentLocalizer(moment);
@@ -46,7 +44,7 @@ export default function MiniCalendar(props) {
           localizer={localizer}
           startAccessor="start"
           endAccessor="end"
-          style={{ height: 280 }}
+          style={{ height: 500 }}
           events={events}
           defaultView="month"
           eventPropGetter={eventStyleGetter}
@@ -94,6 +92,7 @@ export default function MiniCalendar(props) {
   );
 }
 const CustomToolbar = (toolbar) => {
+    toolbar.onView('month');
 
   const goToBack = () => {
       toolbar.onNavigate('prev');
@@ -141,7 +140,7 @@ const CustomToolbar = (toolbar) => {
               <Button size="xs" onClick={goToCurrent}>Hoy</Button>
               <Button size="xs" onClick={goToNext}> <ChevronRightIcon /></Button>
           </span>
-          <span className="rbc-toolbar-label">{toolbar.label}</span>
+          <span className="rbc-toolbar-label-big">{toolbar.label}</span>
 
           {/* <span className="rbc-btn-group">
               <button type="button" className="rbc-week-view" onClick={goToWeek}>Semana</button>

@@ -4,161 +4,156 @@ import React from "react";
 import {
   Icon,
   Flex,
-  Text,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   useDisclosure,
   useColorModeValue,
+  Button,
+  Modal, 
+  ModalBody, 
+  ModalCloseButton, 
+  ModalContent, 
+  ModalFooter, 
+  ModalHeader, 
+  ModalOverlay,
+  FormControl,
+  FormLabel,
+  Input,
+  Grid,
+  SimpleGrid,
+  Select
 } from "@chakra-ui/react";
-// Assets
-import {
-  MdOutlineMoreHoriz,
-  MdOutlinePerson,
-  MdOutlineCardTravel,
-  MdOutlineLightbulb,
-  MdOutlineSettings,
-} from "react-icons/md";
+
+import {BiBookAdd} from "react-icons/bi";
+import { useState } from "react";
 
 export default function Banner(props) {
-  const { ...rest } = props;
-
-  const textColor = useColorModeValue("secondaryGray.500", "white");
-  const textHover = useColorModeValue(
-    { color: "secondaryGray.900", bg: "unset" },
-    { color: "secondaryGray.500", bg: "unset" }
-  );
+  const {addBook, ...rest } = props;
   const iconColor = useColorModeValue("brand.500", "white");
-  const bgList = useColorModeValue("white", "whiteAlpha.100");
-  const bgShadow = useColorModeValue(
-    "14px 17px 40px 4px rgba(112, 144, 176, 0.08)",
-    "unset"
-  );
-  const bgButton = useColorModeValue("secondaryGray.300", "whiteAlpha.100");
-  const bgHover = useColorModeValue(
-    { bg: "secondaryGray.400" },
-    { bg: "whiteAlpha.50" }
-  );
-  const bgFocus = useColorModeValue(
-    { bg: "secondaryGray.300" },
-    { bg: "whiteAlpha.100" }
-  );
+
+  const initialRef = React.useRef(null)
+  const finalRef = React.useRef(null)
 
   // Ellipsis modals
-  const {
-    isOpen: isOpen1,
-    onOpen: onOpen1,
-    onClose: onClose1,
-  } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
+  const [localizador, setLocalizador] = useState('')
+  const [fechaAlta, setFechaAlta] = useState('')
+  const [fechaEntrada, setFechaEntrada] = useState('')
+  const [fechaSalida, setFechaSalida] = useState('')
+  const [estado, setEstado] = useState('pendiente')
+  const [adultos, setAdultos] = useState('')
+  const [ninos, setNinos] = useState('')
+  const [bebes, setBebes] = useState('')
+  const [alojamiento, setAlojamiento] = useState('')
+  const [precio, setPrecio] = useState('')
 
   return (
-    <Menu isOpen={isOpen1} onClose={onClose1}>
-      <MenuButton
+    <>
+     {addBook && <Flex
         align='center'
-        justifyContent='center'
-        bg={bgButton}
-        _hover={bgHover}
-        _focus={bgFocus}
-        _active={bgFocus}
-        w='37px'
-        h='37px'
-        lineHeight='100%'
-        onClick={onOpen1}
-        borderRadius='10px'
+        justifyContent='end'
+        w='100%'
+        h='100%'
         {...rest}>
-        <Icon as={MdOutlineMoreHoriz} color={iconColor} w='24px' h='24px' />
-      </MenuButton>
-      <MenuList
-        w='150px'
-        minW='unset'
-        maxW='150px !important'
-        border='transparent'
-        backdropFilter='blur(63px)'
-        bg={bgList}
-        boxShadow={bgShadow}
-        borderRadius='20px'
-        p='15px'>
-        <MenuItem
-          transition='0.2s linear'
-          color={textColor}
-          _hover={textHover}
-          p='0px'
-          borderRadius='8px'
-          _active={{
-            bg: "transparent",
-          }}
-          _focus={{
-            bg: "transparent",
-          }}
-          mb='10px'>
-          <Flex align='center'>
-            <Icon as={MdOutlinePerson} h='16px' w='16px' me='8px' />
-            <Text fontSize='sm' fontWeight='400'>
-              Panel 1
-            </Text>
-          </Flex>
-        </MenuItem>
-        <MenuItem
-          transition='0.2s linear'
-          p='0px'
-          borderRadius='8px'
-          color={textColor}
-          _hover={textHover}
-          _active={{
-            bg: "transparent",
-          }}
-          _focus={{
-            bg: "transparent",
-          }}
-          mb='10px'>
-          <Flex align='center'>
-            <Icon as={MdOutlineCardTravel} h='16px' w='16px' me='8px' />
-            <Text fontSize='sm' fontWeight='400'>
-              Panel 2
-            </Text>
-          </Flex>
-        </MenuItem>
-        <MenuItem
-          transition='0.2s linear'
-          p='0px'
-          borderRadius='8px'
-          color={textColor}
-          _hover={textHover}
-          _active={{
-            bg: "transparent",
-          }}
-          _focus={{
-            bg: "transparent",
-          }}
-          mb='10px'>
-          <Flex align='center'>
-            <Icon as={MdOutlineLightbulb} h='16px' w='16px' me='8px' />
-            <Text fontSize='sm' fontWeight='400'>
-              Panel 3
-            </Text>
-          </Flex>
-        </MenuItem>
-        <MenuItem
-          transition='0.2s linear'
-          color={textColor}
-          _hover={textHover}
-          p='0px'
-          borderRadius='8px'
-          _active={{
-            bg: "transparent",
-          }}
-          _focus={{
-            bg: "transparent",
-          }}>
-          <Flex align='center'>
-            <Icon as={MdOutlineSettings} h='16px' w='16px' me='8px' />
-            <Text fontSize='sm' fontWeight='400'>
-              Panel 4
-            </Text>
-          </Flex>
-        </MenuItem>
-      </MenuList>
-    </Menu>
+          <Button 
+            borderRadius='10px'
+            lineHeight='100%'
+            align='center'
+            justify='center'
+            onClick={onOpen}
+            color={iconColor}
+            ref={finalRef}
+            >
+            <Icon as={BiBookAdd} color={iconColor} w='24px' h='24px' marginRight={2} />
+            
+            Añadir reserva
+          </Button>
+          <Modal
+          initialFocusRef={initialRef}
+          finalFocusRef={finalRef}
+          isOpen={isOpen}
+          onClose={onClose}
+          size="xl"
+        >
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Nueva reserva</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody pb={6}>
+              <Grid gap={6}>
+                <SimpleGrid columns={2} spacing={2}>
+                  <FormControl>
+                    <FormLabel>Localizador</FormLabel>
+                    <Input ref={initialRef} placeholder='Localizador' />
+                  </FormControl>
+                    <FormControl>
+                      <FormLabel>Fecha alta</FormLabel>
+                      <Input type="date" placeholder='Fecha alta' />
+                    </FormControl>
+                </SimpleGrid>
+
+                <SimpleGrid columns={2} spacing={2}>
+                  <FormControl>
+                    <FormLabel>Fecha entrada</FormLabel>
+                    <Input type="date" placeholder='Fecha entrada' />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Fecha salida</FormLabel>
+                    <Input type="date" placeholder='Fecha salida' />
+                  </FormControl>
+                </SimpleGrid>
+                <SimpleGrid columns={1} spacing={2}>
+                  <FormControl>
+                    <FormLabel>Estado</FormLabel>
+                    <Select onChange={(e) => setEstado(e.target.value)}
+                    bg={
+                      estado === "confirmada"
+                        ? "green.500"
+                        : estado=== "pendiente"
+                        ? "orange.500"
+                        : null
+                    } 
+                    >
+                      <option value='pendiente'>Pendiente</option>
+                      <option value='confirmada'>Confirmada</option>
+                    </Select>
+                  </FormControl>
+                </SimpleGrid>
+                <SimpleGrid columns={3} spacing={2}>
+                  <FormControl>
+                    <FormLabel>Adultos</FormLabel>
+                    <Input type="number" min={0} placeholder='Adultos' />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Niños</FormLabel>
+                    <Input type="number" min={0} placeholder='Niños' />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Bebés</FormLabel>
+                    <Input type="number" min={0} placeholder='Bebés' />
+                  </FormControl>
+                </SimpleGrid>
+                <SimpleGrid columns={2} spacing={2}>
+                  <FormControl>
+                    <FormLabel>Alojamiento</FormLabel>
+                    <Input placeholder='Alojamiento' />
+                  </FormControl>
+                  <FormControl>
+                    <FormLabel>Precio</FormLabel>
+                    <Input type="number" min={0} placeholder='Precio' />
+                  </FormControl>
+                </SimpleGrid>
+              </Grid>
+            </ModalBody>
+  
+            <ModalFooter>
+              <Button onClick={onClose} mr={3}>Cancelar</Button>
+              <Button colorScheme='blue'>
+                Guardar
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </Flex>}
+    </>
   );
 }

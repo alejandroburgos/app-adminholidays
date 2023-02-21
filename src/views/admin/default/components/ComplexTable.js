@@ -25,9 +25,8 @@ import Menu from "components/menu/MainMenu";
 
 // Assets
 import { MdCheckCircle, MdCancel, MdOutlineError } from "react-icons/md";
-import { CgLaptop, CgLayoutGrid } from "react-icons/cg";
 export default function ColumnsTable(props) {
-  const { columnsData, tableData } = props;
+  const { columnsData, tableData, addBook } = props;
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => tableData, [tableData]);
 
@@ -67,7 +66,7 @@ export default function ColumnsTable(props) {
           lineHeight='100%'>
           Reservas
         </Text>
-        <Menu />
+        <Menu addBook={addBook}/>
       </Flex>
       <Table {...getTableProps()} variant='simple' color='gray.500' mb='24px'>
         <Thead>
@@ -147,6 +146,12 @@ export default function ColumnsTable(props) {
                         {moment(cell.value).format("DD/MM/YYYY")}
                       </Text>
                     );
+                     } else if (cell.column.Header === "PRECIO") {
+                      data = (
+                        <Text color={textColor} fontSize='sm'>
+                          {cell.value} €
+                        </Text>
+                      );
                   } else {
                     data = (
                       <Text color={textColor} fontSize='sm'>

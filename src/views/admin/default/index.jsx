@@ -46,34 +46,33 @@ import moment from "moment";
 export default function UserReports() {
   // Chakra Color Mode
   const brandColor = useColorModeValue("brand.500", "white");
+  const redColor = useColorModeValue("red.500", "red.400");
+  const grayColor = useColorModeValue("gray.500", "gray.400");
   const boxBg = useColorModeValue("secondaryGray.300", "whiteAlpha.100");
   const [events, setEvents] = useState([{}]);
   // set columnsDataComplex into events
   useEffect(() => {
-    // random color for each event
-    const randomColor = () => {
-      const letters = "0123456789ABCDEF";
-      let color = "#";
-      for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-      }
-      return color;
-    };
 
     const events = tableDataComplex.map((item) => {
+      console.log(item.estado)
       return {
         start: new Date(item.fechaEntrada),
         end: new Date(item.fechaSalida),
-        title: item.localizador,
-        color: randomColor(),
+        title: " ",
+        color: item.estado === "Confirmada"
+        ? " #01b574"
+        : item.estado=== "Prereserva"
+        ? "#ffb547"
+        : null,
       };
     });
+    console.log(events)
     setEvents(events);
   }, []);
 
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
-      {/* <SimpleGrid
+      <SimpleGrid
         columns={{ base: 1, md: 2, lg: 3, "2xl": 6 }}
         gap='20px'
         mb='20px'>
@@ -88,7 +87,7 @@ export default function UserReports() {
               }
             />
           }
-          name='Ganancias totales'
+          name='Ganancias anuales'
           value='350,00€'
         />
         <MiniStatistics
@@ -98,16 +97,16 @@ export default function UserReports() {
               h='56px'
               bg={boxBg}
               icon={
-                <Icon w='32px' h='32px' as={MdAttachMoney} color={brandColor} />
+                <Icon w='32px' h='32px' as={MdAttachMoney} color={redColor} />
               }
             />
           }
-          name='Este año'
+          name='Gastos anuales'
           value='100,00€'
         />
-        <MiniStatistics growth='+23%' name='Sales' value='$574.34' />
+        {/* <MiniStatistics growth='+23%' name='Sales' value='$574.34' /> */}
 
-        <MiniStatistics
+        {/* <MiniStatistics
           startContent={
             <IconBox
               w='56px'
@@ -118,7 +117,7 @@ export default function UserReports() {
           }
           name='New Tasks'
           value='154'
-        />
+        /> */}
         <MiniStatistics
           startContent={
             <IconBox
@@ -126,14 +125,14 @@ export default function UserReports() {
               h='56px'
               bg={boxBg}
               icon={
-                <Icon w='32px' h='32px' as={FaHouseUser} color={brandColor} />
+                <Icon w='32px' h='32px' as={FaHouseUser} color={grayColor} />
               }
             />
           }
           name='Clientes totales'
           value='10'
         />
-      </SimpleGrid> */}
+      </SimpleGrid>
 
       <SimpleGrid columns={{ base: 1, md: 1, xl: 1 }} gap='20px' mb='20px'>
         {/* <TotalSpent /> */}
@@ -144,6 +143,7 @@ export default function UserReports() {
           <ComplexTable
             columnsData={columnsDataComplex}
             tableData={tableDataComplex}
+            addBook={false}
           />
         </GridItem>
         <GridItem colSpan={1} >
@@ -151,11 +151,11 @@ export default function UserReports() {
         </GridItem>
           {/* <PieCard /> */}
       </Grid>
-      <SimpleGrid columns={{ base: 1, md: 1, xl: 2 }} gap='20px' mb='20px'>
+      {/* <SimpleGrid columns={{ base: 1, md: 1, xl: 2 }} gap='20px' mb='20px'>
         <SimpleGrid columns={{ base: 1, md: 1, xl: 2 }} gap='20px'>
           <DailyTraffic />
         </SimpleGrid>
-      </SimpleGrid>
+      </SimpleGrid> */}
     </Box>
   );
 }

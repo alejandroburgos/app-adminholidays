@@ -59,27 +59,23 @@ export default function WeeklyRevenue(props) {
 
   const data2 = [];
   for (let i = 0; i < 12; i++) {
-    data2.push(Math.floor(Math.random() * 1000));
+    data2.push(Math.floor(Math.random() * 500));
   }
 
    const barChartDataConsumption = [
     {
-      name: "RESERVADO",
+      name: "GANANCIAS NETAS",
       data: data,
+    },
+    {
+      name: "GASTOS NETOS",
+      data: data2,
     },
   ];
   
-  const footer = (tooltipItems) => {
-    let sum = 0;
-  
-    tooltipItems.forEach(function(tooltipItem) {
-      sum += tooltipItem.parsed.y;
-    });
-    return 'Sum: ' + sum;
-  };
    const barChartOptionsConsumption = {
     chart: {
-      stacked: true,
+      stacked: false,
       toolbar: {
         show: false,
       },
@@ -148,12 +144,12 @@ export default function WeeklyRevenue(props) {
     },
     fill: {
       type: "solid",
-      colors: ["#5E37FF", "#6AD2FF", "#E1E9F8"],
+      colors: ["#5E37FF", "#ff686b", "#E1E9F8"],
     },
     legend: {
       show: true,
     },
-    colors: ["#5E37FF", "#6AD2FF", "#E1E9F8"],
+    colors: ["#5E37FF", "#ff686b", "#E1E9F8"],
     dataLabels: {
       enabled: false,
     },
