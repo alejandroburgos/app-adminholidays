@@ -4,6 +4,7 @@ import {
   Button,
   Flex,
   Icon,
+  Input,
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
@@ -11,6 +12,7 @@ import {
 import Card from "components/card/Card.js";
 import LineChart from "components/charts/LineChart";
 import React from "react";
+import { useState } from "react";
 import { IoCheckmarkCircle } from "react-icons/io5";
 import { MdBarChart, MdOutlineCalendarToday } from "react-icons/md";
 // Assets
@@ -22,8 +24,6 @@ import {
 
 export default function TotalSpent(props) {
   const { ...rest } = props;
-
-  // Chakra Color Mode
 
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const textColorSecondary = useColorModeValue("secondaryGray.600", "white");
@@ -38,6 +38,8 @@ export default function TotalSpent(props) {
     { bg: "secondaryGray.300" },
     { bg: "whiteAlpha.100" }
   );
+
+  const [typeDate, setTypeDate] = useState("number")
   return (
     <Card
       justifyContent='center'
@@ -53,13 +55,45 @@ export default function TotalSpent(props) {
             fontSize='sm'
             fontWeight='500'
             color={textColorSecondary}
-            borderRadius='7px'>
+            borderRadius='7px'
+            onClick={() => setTypeDate("month")}
+            >
             <Icon
               as={MdOutlineCalendarToday}
               color={textColorSecondary}
               me='4px'
             />
-            This month
+            Mensual
+          </Button>
+          <Input 
+            type={typeDate} 
+            size="md"
+            w='200px'
+            color={textColorSecondary}
+            borderRadius='7px'
+            marginLeft={4}
+            fontSize='sm'
+            fontWeight='500'
+            min={2010}
+            max={2050}
+            placeholder='Año'
+
+            />
+          <Button
+            bg={boxBg}
+            fontSize='sm'
+            fontWeight='500'
+            color={textColorSecondary}
+            borderRadius='7px'
+            marginLeft={4}
+            onClick={() => setTypeDate("number")}
+          >
+            <Icon
+              as={MdOutlineCalendarToday}
+              color={textColorSecondary}
+              me='4px'
+            />
+            Anual
           </Button>
           <Button
             ms='auto'
@@ -86,7 +120,7 @@ export default function TotalSpent(props) {
             textAlign='start'
             fontWeight='700'
             lineHeight='100%'>
-            $37.5K
+            500,00€
           </Text>
           <Flex align='center' mb='20px'>
             <Text
@@ -95,7 +129,7 @@ export default function TotalSpent(props) {
               fontWeight='500'
               mt='4px'
               me='12px'>
-              Total Spent
+              Ganancias
             </Text>
             <Flex align='center'>
               <Icon as={RiArrowUpSFill} color='green.500' me='2px' mt='2px' />
@@ -108,11 +142,11 @@ export default function TotalSpent(props) {
           <Flex align='center'>
             <Icon as={IoCheckmarkCircle} color='green.500' me='4px' />
             <Text color='green.500' fontSize='md' fontWeight='700'>
-              On track
+              Actualizado
             </Text>
           </Flex>
         </Flex>
-        <Box minH='260px' minW='75%' mt='auto'>
+        <Box minH='260px' minW='100%' mt='auto'>
           <LineChart
             chartData={lineChartDataTotalSpent}
             chartOptions={lineChartOptionsTotalSpent}

@@ -141,7 +141,7 @@ export const barChartOptionsConsumption = {
     theme: "dark",
   },
   xaxis: {
-    categories: ["17", "18", "19", "20", "21", "22", "23", "24", "25"],
+    categories: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", ],
     show: false,
     labels: {
       show: true,
@@ -304,7 +304,7 @@ export const lineChartOptionsTotalSpent = {
   },
   xaxis: {
     type: "numeric",
-    categories: ["SEP", "OCT", "NOV", "DEC", "JAN", "FEB"],
+    categories: ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC'],
     labels: {
       style: {
         colors: "#A3AED0",
@@ -316,7 +316,7 @@ export const lineChartOptionsTotalSpent = {
       show: false,
     },
     axisTicks: {
-      show: false,
+      show: true,
     },
   },
   yaxis: {

@@ -1,26 +1,37 @@
 [
+
   {
-    "name":"Horizon UI PRO",
-    "status": "Approved",
-    "date": "18 Apr 2022",
-    "progress": 75.5  
+    "localizador": "123456789",
+    "fechaEntrada": "Tue Jul 04 2023 02:00:00 GMT+0200 (hora de verano de Europa central)",
+    "fechaSalida": "Mon Jul 24 2023 02:00:00 GMT+0200 (hora de verano de Europa central)",
+    "estado": "Confirmada",
+    "adultos": 2,
+    "ninos": 0,
+    "bebes": 0,
+    "alojamiento": "Finca los Acebuches",
+    "precio": 100
   },
   {
-    "name":"Horizon UI Free",
-    "status": "Disable",
-    "date": "18 Apr 2022",
-    "progress": 25.5  
+    "localizador": "123456789",
+    "fechaEntrada": "Fri Jun 09 2023 02:00:00 GMT+0200 (hora de verano de Europa central)",
+    "fechaSalida": "Tue Jun 13 2023 02:00:00 GMT+0200 (hora de verano de Europa central)",
+    "estado": "Prereserva",
+    "adultos": 2,
+    "ninos": 0,
+    "bebes": 0,
+    "alojamiento": "Finca los Acebuches",
+    "precio": 100
   },
   {
-    "name":"Marketplace",
-    "status": "Error",
-    "date": "20 May 2021",
-    "progress": 90  
-  },
-  {
-    "name":"Weekly Updates",
-    "status": "Approved",
-    "date": "12 Jul 2021",
-    "progress": 50.5  
+    "localizador": "123456789",
+    "fechaEntrada": "Wed Aug 02 2023 00:00:00 GMT+0200 (hora de verano de Europa central)",
+    "fechaSalida": "Sun Aug 13 2023 00:00:00 GMT+0100 (hora estándar de Europa central)",
+    "estado": "Cancelada",
+    "adultos": 2,
+    "ninos": 0,
+    "bebes": 0,
+    "alojamiento": "Finca los Acebuches",
+    "precio": 100
   }
 ]
+

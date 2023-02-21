@@ -18,16 +18,16 @@ import {
   useSortBy,
   useTable,
 } from "react-table";
-
+import moment from "moment";
 // Custom components
 import Card from "components/card/Card";
 import Menu from "components/menu/MainMenu";
 
 // Assets
 import { MdCheckCircle, MdCancel, MdOutlineError } from "react-icons/md";
+import { CgLaptop, CgLayoutGrid } from "react-icons/cg";
 export default function ColumnsTable(props) {
   const { columnsData, tableData } = props;
-
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => tableData, [tableData]);
 
@@ -65,7 +65,7 @@ export default function ColumnsTable(props) {
           fontSize='22px'
           fontWeight='700'
           lineHeight='100%'>
-          Complex Table
+          Reservas
         </Text>
         <Menu />
       </Flex>
@@ -98,13 +98,13 @@ export default function ColumnsTable(props) {
               <Tr {...row.getRowProps()} key={index}>
                 {row.cells.map((cell, index) => {
                   let data = "";
-                  if (cell.column.Header === "NAME") {
+                  if (cell.column.Header === "LOCALIZADOR") {
                     data = (
-                      <Text color={textColor} fontSize='sm' fontWeight='700'>
+                      <Text color={textColor} fontSize='sm'>
                         {cell.value}
                       </Text>
                     );
-                  } else if (cell.column.Header === "STATUS") {
+                  } else if (cell.column.Header === "ESTADO") {
                     data = (
                       <Flex align='center'>
                         <Icon
@@ -112,46 +112,46 @@ export default function ColumnsTable(props) {
                           h='24px'
                           me='5px'
                           color={
-                            cell.value === "Approved"
+                            cell.value === "Confirmada"
                               ? "green.500"
-                              : cell.value === "Disable"
+                              : cell.value === "Cancelada"
                               ? "red.500"
-                              : cell.value === "Error"
+                              : cell.value === "Prereserva"
                               ? "orange.500"
                               : null
                           }
                           as={
-                            cell.value === "Approved"
+                            cell.value === "Confirmada"
                               ? MdCheckCircle
-                              : cell.value === "Disable"
+                              : cell.value === "Cancelada"
                               ? MdCancel
-                              : cell.value === "Error"
+                              : cell.value === "Prereserva"
                               ? MdOutlineError
                               : null
                           }
                         />
-                        <Text color={textColor} fontSize='sm' fontWeight='700'>
+                        <Text color={textColor} fontSize='sm'>
                           {cell.value}
                         </Text>
                       </Flex>
                     );
-                  } else if (cell.column.Header === "DATE") {
+                  } else if (cell.column.Header === "FECHA ENTRADA") {
                     data = (
-                      <Text color={textColor} fontSize='sm' fontWeight='700'>
-                        {cell.value}
+                      <Text color={textColor} fontSize='sm' >
+                        {moment(cell.value).format("DD/MM/YYYY")}
                       </Text>
                     );
-                  } else if (cell.column.Header === "PROGRESS") {
+                  } else if (cell.column.Header === "FECHA SALIDA") {
                     data = (
-                      <Flex align='center'>
-                        <Progress
-                          variant='table'
-                          colorScheme='brandScheme'
-                          h='8px'
-                          w='108px'
-                          value={cell.value}
-                        />
-                      </Flex>
+                      <Text color={textColor} fontSize='sm'>
+                        {moment(cell.value).format("DD/MM/YYYY")}
+                      </Text>
+                    );
+                  } else {
+                    data = (
+                      <Text color={textColor} fontSize='sm'>
+                        {cell.value}
+                      </Text>
                     );
                   }
                   return (

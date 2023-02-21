@@ -1,36 +1,76 @@
 export const columnsDataCheck = [
   {
-    Header: "NAME",
-    accessor: "name",
+    Header: "LOCALIZADOR",
+    accessor: "localizador",
   },
   {
-    Header: "PROGRESS",
-    accessor: "progress",
+    Header: "FECHA ALTA",
+    accessor: "fechaAlta",
   },
   {
-    Header: "QUANTITY",
-    accessor: "quantity",
+    Header: "FECHA SALIDA",
+    accessor: "fechaSalida",
   },
   {
-    Header: "DATE",
-    accessor: "date",
+    Header: "ESTADO",
+    accessor: "estado",
+  },
+  {
+    Header: "ADULTOS",
+    accessor: "adultos",
+  },
+  {
+    Header: "NIÑOS",
+    accessor: "ninos",
+  },
+  {
+    Header: "BEBES",
+    accessor: "bebes",
+  },
+  {
+    Header: "ALOJAMIENTO",
+    accessor: "alojamiento",
+  },
+  {
+    Header: "PRECIO",
+    accessor: "precio",
   },
 ];
 export const columnsDataComplex = [
   {
-    Header: "NAME",
-    accessor: "name",
+    Header: "LOCALIZADOR",
+    accessor: "localizador",
   },
   {
-    Header: "STATUS",
-    accessor: "status",
+    Header: "FECHA ENTRADA",
+    accessor: "fechaEntrada",
   },
   {
-    Header: "DATE",
-    accessor: "date",
+    Header: "FECHA SALIDA",
+    accessor: "fechaSalida",
   },
   {
-    Header: "PROGRESS",
-    accessor: "progress",
+    Header: "ESTADO",
+    accessor: "estado",
+  },
+  {
+    Header: "ADULTOS",
+    accessor: "adultos",
+  },
+  {
+    Header: "NIÑOS",
+    accessor: "ninos",
+  },
+  {
+    Header: "BEBES",
+    accessor: "bebes",
+  },
+  {
+    Header: "ALOJAMIENTO",
+    accessor: "alojamiento",
+  },
+  {
+    Header: "PRECIO",
+    accessor: "precio",
   },
 ];
