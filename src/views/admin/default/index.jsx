@@ -53,9 +53,10 @@ export default function UserReports() {
   const [events, setEvents] = useState([{}]);
   const [books, setBooks] = useState([])
 
+  const session = JSON.parse(sessionStorage.getItem('login-user'))
 
   const getBooks = async () => {
-    const response = await fetch(`${constants.urlLocal}books`, {
+    const response = await fetch(`${constants.urlLocal}books/${session.user}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -145,32 +146,28 @@ export default function UserReports() {
             />
           }
           name='Clientes totales'
-          value='10'
+          value={books.length}
         />
       </SimpleGrid>
 
-      <SimpleGrid columns={{ base: 1, md: 1, xl: 1 }} gap='20px' mb='20px'>
+      <SimpleGrid columns={{ base: 1, md: 1, xl: 2 }} gap='20px' mb='20px'>
         {/* <TotalSpent /> */}
         <WeeklyRevenue />
+        <SimpleGrid columns={{ base: 1, md: 1, xl: 1 }} gap='20px' mb='20px'>
+          <MiniCalendar h='100%' minW="100%" events={events} />
+        </SimpleGrid>  
       </SimpleGrid>
-      <Grid templateColumns='repeat(5, 1fr)' gap={4}>
-        <GridItem colSpan={4}>
+      <Grid mb='20px'>
+        <GridItem >
           <ComplexTable
             columnsData={columnsDataComplex}
             tableData={tableDataComplex}
             addBook={false}
           />
         </GridItem>
-        <GridItem colSpan={1} >
-          <MiniCalendar h='100%' minW='100%' events={events} />
-        </GridItem>
-          {/* <PieCard /> */}
       </Grid>
-      {/* <SimpleGrid columns={{ base: 1, md: 1, xl: 2 }} gap='20px' mb='20px'>
-        <SimpleGrid columns={{ base: 1, md: 1, xl: 2 }} gap='20px'>
-          <DailyTraffic />
-        </SimpleGrid>
-      </SimpleGrid> */}
+      <SimpleGrid columns={{ base: 1, md: 1, xl: 1 }} gap='20px' mb='20px'>
+      </SimpleGrid>
     </Box>
   );
 }

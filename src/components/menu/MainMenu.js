@@ -42,15 +42,18 @@ export default function Banner(props) {
   const [fechaEntrada, setFechaEntrada] = useState('')
   const [fechaSalida, setFechaSalida] = useState('')
   const [estado, setEstado] = useState('pendiente')
-  const [adultos, setAdultos] = useState('')
-  const [ninos, setNinos] = useState('')
-  const [bebes, setBebes] = useState('')
+  const [adultos, setAdultos] = useState(0)
+  const [ninos, setNinos] = useState(0)
+  const [bebes, setBebes] = useState(0)
   const [alojamiento, setAlojamiento] = useState('')
   const [precio, setPrecio] = useState('')
 
+  // get user
+  const session = JSON.parse(sessionStorage.getItem('login-user'))
+
   // save book
   const saveBook = async () => {
-    const response = await fetch(`${constants.urlLocal}book`, {
+    const response = await fetch(`${constants.urlLocal}book/${session.user}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -131,13 +134,18 @@ export default function Banner(props) {
                 <SimpleGrid columns={2} spacing={2}>
                   <FormControl>
                     <FormLabel>Fecha entrada</FormLabel>
-                    <Input type="date" color={textColor} placeholder='Fecha entrada'
+                    <Input type="date" 
+                      color={textColor} placeholder='Fecha entrada'
                       onChange={(e) => setFechaEntrada(e.target.value)}
                     />
                   </FormControl>
                   <FormControl>
                     <FormLabel>Fecha salida</FormLabel>
-                    <Input type="date" color={textColor} placeholder='Fecha salida' 
+                    <Input type="date"
+                      disabled={fechaEntrada === '' || !fechaEntrada ? true : false}
+                      min={fechaEntrada}
+                      color={textColor} 
+                      placeholder='Fecha salida' 
                       onChange={(e) => setFechaSalida(e.target.value)}
                     />
                   </FormControl>

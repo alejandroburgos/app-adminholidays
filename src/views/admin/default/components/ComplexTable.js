@@ -27,7 +27,7 @@ import Menu from "components/menu/MainMenu";
 import { MdCheckCircle, MdCancel, MdOutlineError } from "react-icons/md";
 import { constants } from "Constants";
 import { useState } from "react";
-import { CgLayoutGrid } from "react-icons/cg";
+
 export default function ColumnsTable(props) {
   const { columnsData, tableData, addBook } = props;
   const columns = useMemo(() => columnsData, [columnsData]);
@@ -57,9 +57,11 @@ export default function ColumnsTable(props) {
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
 
+  const session = JSON.parse(sessionStorage.getItem('login-user'))
+
   // get all books
   const getBooks = async () => {
-    const response = await fetch(`${constants.urlLocal}books`, {
+    const response = await fetch(`${constants.urlLocal}books/${session.user}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -90,7 +92,7 @@ export default function ColumnsTable(props) {
         </Text>
         <Menu addBook={addBook} setBooks={setBooks} />
       </Flex>
-      <Table {...getTableProps()} variant='simple' color='gray.500' mb='24px'>
+      <Table {...getTableProps()} variant='simple' color='gray.500' mb='24px' size="sm">
         <Thead>
           {headerGroups.map((headerGroup, index) => (
             <Tr {...headerGroup.getHeaderGroupProps()} key={index}>
@@ -169,7 +171,7 @@ export default function ColumnsTable(props) {
                   {row.alojamiento}
                 </Td>
                 <Td color={textColor} fontSize='sm' >
-                  {row.precio}
+                  {row.precio} €
                 </Td>
               </Tr>
             );

@@ -16,7 +16,7 @@ import SignInCentered from "views/auth/signIn";
 import { CgBookmark } from "react-icons/cg";
 import { AiTwotoneCalendar } from "react-icons/ai";
 import { BsBarChartLine } from "react-icons/bs";
-import { MdLock } from "react-icons/md";
+import { MdLock, MdOutlineShoppingCart } from "react-icons/md";
 const routes = [
   {
     name: "Resumen principal",
@@ -38,22 +38,22 @@ const routes = [
     path: "/calendario",
     icon: <Icon as={AiTwotoneCalendar} width='20px' height='20px' color='inherit' />,
     component: CalendarBooks,
-  }
-  // {
-  //   name: "NFT Marketplace",
-  //   layout: "/admin",
-  //   path: "/nft-marketplace",
-  //   icon: (
-  //     <Icon
-  //       as={MdOutlineShoppingCart}
-  //       width='20px'
-  //       height='20px'
-  //       color='inherit'
-  //     />
-  //   ),
-  //   component: NFTMarketplace,
-  //   secondary: true,
-  // },
+  },
+  {
+    name: "NFT Marketplace",
+    layout: "/admin",
+    path: "/nft-marketplace",
+    icon: (
+      <Icon
+        as={MdOutlineShoppingCart}
+        width='20px'
+        height='20px'
+        color='inherit'
+      />
+    ),
+    component: NFTMarketplace,
+    secondary: true,
+  },
   // {
   //   name: "Data Tables",
   //   layout: "/admin",
