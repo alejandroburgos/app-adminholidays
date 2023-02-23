@@ -41,6 +41,13 @@ export default function HeaderLinks(props) {
 		'14px 17px 40px 4px rgba(112, 144, 176, 0.06)'
 	);
 	const borderButton = useColorModeValue('secondaryGray.500', 'whiteAlpha.200');
+
+	const singOut = () => {
+		sessionStorage.removeItem('token');
+		sessionStorage.removeItem('login-user');
+		window.location.href = '#/auth/sign-in';
+	};
+
 	return (
 		<Flex
 			w={{ sm: '100%', md: 'auto' }}
@@ -187,8 +194,12 @@ export default function HeaderLinks(props) {
 							_focus={{ bg: 'none' }}
 							color="red.400"
 							borderRadius="8px"
-							px="14px">
-							<Text fontSize="sm">Log out</Text>
+							px="14px"
+							onClick={() => {
+								singOut();
+							}}
+							>
+							<Text fontSize="sm">Cerrar sesión</Text>
 						</MenuItem>
 					</Flex>
 				</MenuList>

@@ -16,6 +16,7 @@ import SignInCentered from "views/auth/signIn";
 import { CgBookmark } from "react-icons/cg";
 import { AiTwotoneCalendar } from "react-icons/ai";
 import { BsBarChartLine } from "react-icons/bs";
+import { MdLock } from "react-icons/md";
 const routes = [
   {
     name: "Resumen principal",
@@ -67,13 +68,13 @@ const routes = [
   //   icon: <Icon as={MdPerson} width='20px' height='20px' color='inherit' />,
   //   component: Profile,
   // },
-  // {
-  //   name: "Sign In",
-  //   layout: "/auth",
-  //   path: "/sign-in",
-  //   icon: <Icon as={MdLock} width='20px' height='20px' color='inherit' />,
-  //   component: SignInCentered,
-  // },
+  ,{
+    name: "Sign In",
+    layout: "/auth",
+    path: "/sign-in",
+    icon: <Icon as={MdLock} width='20px' height='20px' color='inherit' />,
+    component: SignInCentered,
+  },
   // {
   //   name: "RTL Admin",
   //   layout: "/rtl",

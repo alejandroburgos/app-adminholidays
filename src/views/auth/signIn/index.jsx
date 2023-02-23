@@ -1,11 +1,14 @@
 
-import React from "react";
-import { NavLink } from "react-router-dom";
-// Chakra imports
+import React, { useState } from "react";
+import { constants } from "../../../Constants";
+
 import {
+  Alert,
+  AlertIcon,
   Box,
   Button,
   Checkbox,
+  Fade,
   Flex,
   FormControl,
   FormLabel,
@@ -18,33 +21,67 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 // Custom components
-import { HSeparator } from "components/separator/Separator";
 import DefaultAuth from "layouts/auth/Default";
 // Assets
 import illustration from "assets/img/auth/auth.png";
-import { FcGoogle } from "react-icons/fc";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { RiEyeCloseLine } from "react-icons/ri";
+import { useHistory } from "react-router-dom";
 
 function SignIn() {
   // Chakra color mode
   const textColor = useColorModeValue("navy.700", "white");
   const textColorSecondary = "gray.400";
-  const textColorDetails = useColorModeValue("navy.700", "secondaryGray.600");
-  const textColorBrand = useColorModeValue("brand.500", "white");
+
   const brandStars = useColorModeValue("brand.500", "brand.400");
-  const googleBg = useColorModeValue("secondaryGray.300", "whiteAlpha.200");
-  const googleText = useColorModeValue("navy.700", "white");
-  const googleHover = useColorModeValue(
-    { bg: "gray.200" },
-    { bg: "whiteAlpha.300" }
-  );
-  const googleActive = useColorModeValue(
-    { bg: "secondaryGray.300" },
-    { bg: "whiteAlpha.200" }
-  );
+
   const [show, setShow] = React.useState(false);
   const handleClick = () => setShow(!show);
+
+  const [user, setUser] = useState("");
+  const [password, setPassword] = useState("");
+  const [alert, setAlert] = useState({
+    open: false,
+    message: "",
+    classes: "error",
+  })
+  const [loading, setLoading] = useState(false)
+
+  const history = useHistory();
+
+  const login = async () => {
+    setAlert({ open: false, message: "", classes: "error" });
+    setLoading(true)
+    const response = await fetch(`${constants.urlLocal}login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user: user.toLowerCase(),
+        password: password,
+      }),
+    });
+    const json = await response.json();
+
+    try {
+      if (response.ok) {
+        setAlert({ open: false, message: "", classes: "success" });
+        // set token to localStorage
+        sessionStorage.setItem("login-user", JSON.stringify(json));
+        history.push("/resumen-principal", { state: { user: json } });
+        setLoading(false)
+      } else {
+        setAlert({ open: true, message: json.message, classes: "error" });
+        setLoading(false)
+      }
+    } catch (error) {
+      setLoading(false)
+      console.log("error", error);
+      setAlert({ open: true, message: error, classes: "error" });
+    }
+  };
+
   return (
     <DefaultAuth illustrationBackground={illustration} image={illustration}>
       <Flex
@@ -61,7 +98,7 @@ function SignIn() {
         flexDirection='column'>
         <Box me='auto'>
           <Heading color={textColor} fontSize='36px' mb='10px'>
-            Sign In
+            Iniciar sesión
           </Heading>
           <Text
             mb='36px'
@@ -69,7 +106,7 @@ function SignIn() {
             color={textColorSecondary}
             fontWeight='400'
             fontSize='md'>
-            Enter your email and password to sign in!
+            Inicia sesión con tu correo electrónico y contraseña
           </Text>
         </Box>
         <Flex
@@ -82,7 +119,7 @@ function SignIn() {
           mx={{ base: "auto", lg: "unset" }}
           me='auto'
           mb={{ base: "20px", md: "auto" }}>
-          <Button
+          {/* <Button
             fontSize='sm'
             me='0px'
             mb='26px'
@@ -97,14 +134,14 @@ function SignIn() {
             _focus={googleActive}>
             <Icon as={FcGoogle} w='20px' h='20px' me='10px' />
             Sign in with Google
-          </Button>
-          <Flex align='center' mb='25px'>
+          </Button> */}
+          {/* <Flex align='center' mb='25px'>
             <HSeparator />
             <Text color='gray.400' mx='14px'>
               or
             </Text>
             <HSeparator />
-          </Flex>
+          </Flex> */}
           <FormControl>
             <FormLabel
               display='flex'
@@ -113,7 +150,8 @@ function SignIn() {
               fontWeight='500'
               color={textColor}
               mb='8px'>
-              Email<Text color={brandStars}>*</Text>
+              Email
+            <Text color={brandStars}>*</Text>
             </FormLabel>
             <Input
               isRequired={true}
@@ -121,18 +159,21 @@ function SignIn() {
               fontSize='sm'
               ms={{ base: "0px", md: "0px" }}
               type='email'
-              placeholder='mail@simmmple.com'
+              placeholder='mail@aleburgos.es'
               mb='24px'
               fontWeight='500'
               size='lg'
-            />
+              onChange={
+                (e) => setUser(e.target.value)
+              }            
+              />
             <FormLabel
               ms='4px'
               fontSize='sm'
               fontWeight='500'
               color={textColor}
               display='flex'>
-              Password<Text color={brandStars}>*</Text>
+              Contraseña<Text color={brandStars}>*</Text>
             </FormLabel>
             <InputGroup size='md'>
               <Input
@@ -143,6 +184,9 @@ function SignIn() {
                 size='lg'
                 type={show ? "text" : "password"}
                 variant='auth'
+                onChange={
+                  (e) => setPassword(e.target.value)
+                }
               />
               <InputRightElement display='flex' alignItems='center' mt='4px'>
                 <Icon
@@ -166,10 +210,10 @@ function SignIn() {
                   fontWeight='normal'
                   color={textColor}
                   fontSize='sm'>
-                  Keep me logged in
+                  Recordar
                 </FormLabel>
               </FormControl>
-              <NavLink to='/auth/forgot-password'>
+              {/* <NavLink to='/auth/forgot-password'>
                 <Text
                   color={textColorBrand}
                   fontSize='sm'
@@ -177,7 +221,7 @@ function SignIn() {
                   fontWeight='500'>
                   Forgot password?
                 </Text>
-              </NavLink>
+              </NavLink> */}
             </Flex>
             <Button
               fontSize='sm'
@@ -185,8 +229,10 @@ function SignIn() {
               fontWeight='500'
               w='100%'
               h='50'
-              mb='24px'>
-              Sign In
+              mb='24px'
+              isLoading={loading}
+              onClick={login}>
+              Iniciar sesión
             </Button>
           </FormControl>
           <Flex
@@ -195,7 +241,7 @@ function SignIn() {
             alignItems='start'
             maxW='100%'
             mt='0px'>
-            <Text color={textColorDetails} fontWeight='400' fontSize='14px'>
+            {/* <Text color={textColorDetails} fontWeight='400' fontSize='14px'>
               Not registered yet?
               <NavLink to='/auth/sign-up'>
                 <Text
@@ -206,8 +252,14 @@ function SignIn() {
                   Create an Account
                 </Text>
               </NavLink>
-            </Text>
+            </Text> */}
           </Flex>
+          <Fade in={alert.open}>
+            <Alert status={alert.classes}>
+              <AlertIcon />
+              {alert.message}
+            </Alert>
+          </Fade>
         </Flex>
       </Flex>
     </DefaultAuth>

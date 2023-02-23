@@ -24,10 +24,12 @@ import {
 
 import {BiBookAdd} from "react-icons/bi";
 import { useState } from "react";
+import { constants } from "Constants";
 
 export default function Banner(props) {
-  const {addBook, ...rest } = props;
+  const {addBook,setBooks, ...rest } = props;
   const iconColor = useColorModeValue("brand.500", "white");
+  const textColor = useColorModeValue("secondaryGray.900", "white");
 
   const initialRef = React.useRef(null)
   const finalRef = React.useRef(null)
@@ -46,9 +48,37 @@ export default function Banner(props) {
   const [alojamiento, setAlojamiento] = useState('')
   const [precio, setPrecio] = useState('')
 
+  // save book
+  const saveBook = async () => {
+    const response = await fetch(`${constants.urlLocal}book`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        localizador: localizador,
+        fecha_alta: fechaAlta,
+        fecha_entrada: fechaEntrada,
+        fecha_salida: fechaSalida,
+        estado: estado,
+        adultos: adultos,
+        ninos: ninos,
+        bebes: bebes,
+        alojamiento: alojamiento,
+        precio: precio
+      }),
+    });
+    const json = await response.json();
+    if (json.ok) {
+      setBooks(json.data)
+      onClose()
+    }
+  }
+
+
   return (
     <>
-     {addBook && <Flex
+    {addBook && <Flex
         align='center'
         justifyContent='end'
         w='100%'
@@ -83,28 +113,40 @@ export default function Banner(props) {
                 <SimpleGrid columns={2} spacing={2}>
                   <FormControl>
                     <FormLabel>Localizador</FormLabel>
-                    <Input ref={initialRef} placeholder='Localizador' />
+                    <Input ref={initialRef}
+                    type="number"
+                      color={textColor} 
+                      placeholder='Localizador' 
+                      onChange={(e) => setLocalizador(e.target.value)}
+                    />
                   </FormControl>
                     <FormControl>
                       <FormLabel>Fecha alta</FormLabel>
-                      <Input type="date" placeholder='Fecha alta' />
+                      <Input type="date" color={textColor} placeholder='Fecha alta'
+                        onChange={(e) => setFechaAlta(e.target.value)}
+                      />
                     </FormControl>
                 </SimpleGrid>
 
                 <SimpleGrid columns={2} spacing={2}>
                   <FormControl>
                     <FormLabel>Fecha entrada</FormLabel>
-                    <Input type="date" placeholder='Fecha entrada' />
+                    <Input type="date" color={textColor} placeholder='Fecha entrada'
+                      onChange={(e) => setFechaEntrada(e.target.value)}
+                    />
                   </FormControl>
                   <FormControl>
                     <FormLabel>Fecha salida</FormLabel>
-                    <Input type="date" placeholder='Fecha salida' />
+                    <Input type="date" color={textColor} placeholder='Fecha salida' 
+                      onChange={(e) => setFechaSalida(e.target.value)}
+                    />
                   </FormControl>
                 </SimpleGrid>
                 <SimpleGrid columns={1} spacing={2}>
                   <FormControl>
                     <FormLabel>Estado</FormLabel>
                     <Select onChange={(e) => setEstado(e.target.value)}
+                    color={textColor}
                     bg={
                       estado === "confirmada"
                         ? "green.500"
@@ -121,25 +163,35 @@ export default function Banner(props) {
                 <SimpleGrid columns={3} spacing={2}>
                   <FormControl>
                     <FormLabel>Adultos</FormLabel>
-                    <Input type="number" min={0} placeholder='Adultos' />
+                    <Input type="number" color={textColor} min={0} placeholder='Adultos'
+                      onChange={(e) => setAdultos(e.target.value)}
+                    />
                   </FormControl>
                   <FormControl>
                     <FormLabel>Niños</FormLabel>
-                    <Input type="number" min={0} placeholder='Niños' />
+                    <Input type="number" color={textColor} min={0} placeholder='Niños'
+                      onChange={(e) => setNinos(e.target.value)}
+                    />
                   </FormControl>
                   <FormControl>
                     <FormLabel>Bebés</FormLabel>
-                    <Input type="number" min={0} placeholder='Bebés' />
+                    <Input type="number" color={textColor} min={0} placeholder='Bebés'
+                      onChange={(e) => setBebes(e.target.value)}
+                    />
                   </FormControl>
                 </SimpleGrid>
                 <SimpleGrid columns={2} spacing={2}>
                   <FormControl>
                     <FormLabel>Alojamiento</FormLabel>
-                    <Input placeholder='Alojamiento' />
+                    <Input placeholder='Alojamiento' color={textColor}
+                      onChange={(e) => setAlojamiento(e.target.value)}
+                    />
                   </FormControl>
                   <FormControl>
                     <FormLabel>Precio</FormLabel>
-                    <Input type="number" min={0} placeholder='Precio' />
+                    <Input type="number" color={textColor} min={0} placeholder='Precio' 
+                      onChange={(e) => setPrecio(e.target.value)}
+                    />
                   </FormControl>
                 </SimpleGrid>
               </Grid>
@@ -147,7 +199,7 @@ export default function Banner(props) {
   
             <ModalFooter>
               <Button onClick={onClose} mr={3}>Cancelar</Button>
-              <Button colorScheme='blue'>
+              <Button colorScheme='blue' onClick={saveBook}>
                 Guardar
               </Button>
             </ModalFooter>

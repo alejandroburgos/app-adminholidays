@@ -42,6 +42,7 @@ import tableDataComplex from "views/admin/default/variables/tableDataComplex.jso
 import { FaHouseUser } from "react-icons/fa";
 import { AiTwotoneCalendar } from "react-icons/ai";
 import moment from "moment";
+import { constants } from "Constants";
 
 export default function UserReports() {
   // Chakra Color Mode
@@ -50,25 +51,39 @@ export default function UserReports() {
   const grayColor = useColorModeValue("gray.500", "gray.400");
   const boxBg = useColorModeValue("secondaryGray.300", "whiteAlpha.100");
   const [events, setEvents] = useState([{}]);
-  // set columnsDataComplex into events
+  const [books, setBooks] = useState([])
+
+
+  const getBooks = async () => {
+    const response = await fetch(`${constants.urlLocal}books`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const json = await response.json();
+    setBooks(json);
+
+  };
+  useEffect(() => {
+    getBooks();
+  }, []);
   useEffect(() => {
 
-    const events = tableDataComplex.map((item) => {
-      console.log(item.estado)
-      return {
-        start: new Date(item.fechaEntrada),
-        end: new Date(item.fechaSalida),
-        title: " ",
-        color: item.estado === "Confirmada"
-        ? " #01b574"
-        : item.estado=== "Prereserva"
-        ? "#ffb547"
-        : null,
-      };
-    });
-    console.log(events)
-    setEvents(events);
-  }, []);
+      const eventsParse = books.map((item) => {
+        return {
+          start: item.fecha_entrada ? new Date(item.fecha_entrada) : null ,
+          end: item.fecha_salida ? new Date(item.fecha_salida) : null,
+          title: " ",
+          color: item.estado === "confirmada"
+              ? " #01b574"
+              : item.estado=== "pendiente"
+              ? "#ffb547"
+              : null,
+        };
+      });
+      setEvents(eventsParse);
+    }, [books]);
 
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>

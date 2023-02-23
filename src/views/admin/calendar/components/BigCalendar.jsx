@@ -92,24 +92,16 @@ export default function BigCalendar(props) {
   );
 }
 const CustomToolbar = (toolbar) => {
-    toolbar.onView('month');
 
   const goToBack = () => {
-      toolbar.onNavigate('prev');
-      if (toolbar.view === 'month'){
-          toolbar.date.setMonth(toolbar.date.getMonth() - 1);
-      } else if (toolbar.view === 'week'){
-          toolbar.date.setDate(toolbar.date.getDate() - 7);
-      } 
+        toolbar.onNavigate('prev');
+        toolbar.date.setMonth(moment(toolbar.date).subtract(1, 'month').month());
+      
   };
 
   const goToNext = () => {
       toolbar.onNavigate('next');
-      if (toolbar.view === 'month'){
-          toolbar.date.setMonth(toolbar.date.getMonth() + 1);
-      } else if (toolbar.view === 'week'){
-          toolbar.date.setDate(toolbar.date.getDate() + 7);
-      }
+          toolbar.date.setMonth(moment(toolbar.date).add(1, 'month').month());
   };
 
   const goToCurrent = () => {
@@ -134,19 +126,21 @@ const CustomToolbar = (toolbar) => {
 
 
   return (
-      <div className="rbc-toolbar">
-          <span className="rbc-btn-group">
-              <Button size="xs" onClick={goToBack}><ChevronLeftIcon /> </Button>
-              <Button size="xs" onClick={goToCurrent}>Hoy</Button>
-              <Button size="xs" onClick={goToNext}> <ChevronRightIcon /></Button>
-          </span>
-          <span className="rbc-toolbar-label-big">{toolbar.label}</span>
+    <div>
+        <span className="rbc-toolbar-label-big">{toolbar.label}</span>
+        <div className="rbc-toolbar">
+            <span className="rbc-btn-group">
+                <Button size="xl" onClick={goToBack}><ChevronLeftIcon /> </Button>
+                <Button size="xl" onClick={goToCurrent}>Hoy</Button>
+                <Button size="xl" onClick={goToNext}> <ChevronRightIcon /></Button>
+            </span>
 
-          {/* <span className="rbc-btn-group">
-              <button type="button" className="rbc-week-view" onClick={goToWeek}>Semana</button>
-              <Button type="button" className="rbc-week-view rbc-toolbar active" onClick={goToWeek}>Semana</Button>
-              <Button type="button" className="rbc-months-view rbc-toolbar" onClick={goToMonth}>Mes</Button>
-          </span> */}
+            {/* <span className="rbc-btn-group">
+                <button type="button" className="rbc-week-view" onClick={goToWeek}>Semana</button>
+                <Button type="button" className="rbc-week-view rbc-toolbar active" onClick={goToWeek}>Semana</Button>
+                <Button type="button" className="rbc-months-view rbc-toolbar" onClick={goToMonth}>Mes</Button>
+            </span> */}
+        </div>
       </div>
   );
 }

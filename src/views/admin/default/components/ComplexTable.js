@@ -11,7 +11,7 @@ import {
   Tr,
   useColorModeValue,
 } from "@chakra-ui/react";
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import {
   useGlobalFilter,
   usePagination,
@@ -25,10 +25,14 @@ import Menu from "components/menu/MainMenu";
 
 // Assets
 import { MdCheckCircle, MdCancel, MdOutlineError } from "react-icons/md";
+import { constants } from "Constants";
+import { useState } from "react";
+import { CgLayoutGrid } from "react-icons/cg";
 export default function ColumnsTable(props) {
   const { columnsData, tableData, addBook } = props;
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => tableData, [tableData]);
+  const [books, setBooks] = useState([])
 
   const tableInstance = useTable(
     {
@@ -52,6 +56,24 @@ export default function ColumnsTable(props) {
 
   const textColor = useColorModeValue("secondaryGray.900", "white");
   const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
+
+  // get all books
+  const getBooks = async () => {
+    const response = await fetch(`${constants.urlLocal}books`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const json = await response.json();
+    setBooks(json);
+
+  };
+
+  useEffect(() => {
+    getBooks();
+  }, []);
+
   return (
     <Card
       direction='column'
@@ -66,7 +88,7 @@ export default function ColumnsTable(props) {
           lineHeight='100%'>
           Reservas
         </Text>
-        <Menu addBook={addBook}/>
+        <Menu addBook={addBook} setBooks={setBooks} />
       </Flex>
       <Table {...getTableProps()} variant='simple' color='gray.500' mb='24px'>
         <Thead>
@@ -90,91 +112,69 @@ export default function ColumnsTable(props) {
             </Tr>
           ))}
         </Thead>
-        <Tbody {...getTableBodyProps()}>
-          {page.map((row, index) => {
-            prepareRow(row);
+        <Tbody>
+          {books.map((row, index) => {
             return (
-              <Tr {...row.getRowProps()} key={index}>
-                {row.cells.map((cell, index) => {
-                  let data = "";
-                  if (cell.column.Header === "LOCALIZADOR") {
-                    data = (
-                      <Text color={textColor} fontSize='sm'>
-                        {cell.value}
-                      </Text>
-                    );
-                  } else if (cell.column.Header === "ESTADO") {
-                    data = (
-                      <Flex align='center'>
-                        <Icon
-                          w='24px'
-                          h='24px'
-                          me='5px'
-                          color={
-                            cell.value === "Confirmada"
-                              ? "green.500"
-                              : cell.value === "Cancelada"
-                              ? "red.500"
-                              : cell.value === "Prereserva"
-                              ? "orange.500"
-                              : null
-                          }
-                          as={
-                            cell.value === "Confirmada"
-                              ? MdCheckCircle
-                              : cell.value === "Cancelada"
-                              ? MdCancel
-                              : cell.value === "Prereserva"
-                              ? MdOutlineError
-                              : null
-                          }
-                        />
-                        <Text color={textColor} fontSize='sm'>
-                          {cell.value}
-                        </Text>
-                      </Flex>
-                    );
-                  } else if (cell.column.Header === "FECHA ENTRADA") {
-                    data = (
-                      <Text color={textColor} fontSize='sm' >
-                        {moment(cell.value).format("DD/MM/YYYY")}
-                      </Text>
-                    );
-                  } else if (cell.column.Header === "FECHA SALIDA") {
-                    data = (
-                      <Text color={textColor} fontSize='sm'>
-                        {moment(cell.value).format("DD/MM/YYYY")}
-                      </Text>
-                    );
-                     } else if (cell.column.Header === "PRECIO") {
-                      data = (
-                        <Text color={textColor} fontSize='sm'>
-                          {cell.value} €
-                        </Text>
-                      );
-                  } else {
-                    data = (
-                      <Text color={textColor} fontSize='sm'>
-                        {cell.value}
-                      </Text>
-                    );
-                  }
-                  return (
-                    <Td
-                      {...cell.getCellProps()}
-                      key={index}
-                      fontSize={{ sm: "14px" }}
-                      maxH='30px !important'
-                      py='8px'
-                      minW={{ sm: "150px", md: "200px", lg: "auto" }}
-                      borderColor='transparent'>
-                      {data}
-                    </Td>
-                  );
-                })}
+              <Tr key={index}>
+                <Td color={textColor} fontSize='sm'>
+                  {row.localizador}
+                </Td>
+                <Td color={textColor} fontSize='sm'>
+                  {moment(row.fecha_alta).format("DD/MM/YYYY")}
+                </Td>
+                <Td color={textColor} fontSize='sm'>
+                {moment(row.fecha_entrada).format("DD/MM/YYYY")}
+                </Td>
+                <Td color={textColor} fontSize='sm'>
+                  {moment(row.fecha_salida).format("DD/MM/YYYY")}
+                </Td>
+                <Td color={textColor} fontSize='sm'>
+                <Flex align='center'>
+                  <Icon
+                    w='24px'
+                    h='24px'
+                    me='5px'
+                    color={
+                      row.estado === "confirmada"
+                        ? "green.500"
+                        : row.estado === "cancelada"
+                        ? "red.500"
+                        : row.estado === "pendiente"
+                        ? "orange.500"
+                        : null
+                    }
+                    as={
+                      row.estado === "confirmada"
+                        ? MdCheckCircle
+                        : row.estado === "cancelada"
+                        ? MdCancel
+                        : row.estado === "pendiente"
+                        ? MdOutlineError
+                        : null
+                    }
+                  />
+                    {row.estado}
+                  </Flex>
+                </Td>
+                <Td color={textColor} fontSize='sm'>
+                  {row.adultos}
+                </Td>
+                <Td color={textColor} fontSize='sm'>
+                  {row.ninos}
+                </Td>
+                <Td color={textColor} fontSize='sm'>
+                  {row.bebes}
+                </Td>
+                <Td color={textColor} fontSize='sm' >
+                  {row.alojamiento}
+                </Td>
+                <Td color={textColor} fontSize='sm' >
+                  {row.precio}
+                </Td>
               </Tr>
             );
           })}
+
         </Tbody>
       </Table>
     </Card>

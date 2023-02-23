@@ -3,26 +3,42 @@ import { Box, SimpleGrid, useColorModeValue } from '@chakra-ui/react'
 import MiniCalendar from 'components/calendar/MiniCalendar'
 import tableDataComplex from "views/admin/default/variables/tableDataComplex.json";
 import BigCalendar from './components/BigCalendar';
+import { constants } from 'Constants';
 
 export const CalendarBooks = () => {
     const brandColor = useColorModeValue("brand.500", "white");
     const [events, setEvents] = useState([{}]);
+    const [books, setBooks] = useState([])
 
+    const getBooks = async () => {
+      const response = await fetch(`${constants.urlLocal}books`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const json = await response.json();
+      setBooks(json);
+  
+    };
     useEffect(() => {
-        const events = tableDataComplex.map((item) => {
+      getBooks();
+    }, []);
+    useEffect(() => {
+        const eventsParse = books.map((item) => {
           return {
-            start: new Date(item.fechaEntrada),
-            end: new Date(item.fechaSalida),
+            start: item.fecha_entrada ? new Date(item.fecha_entrada) : null ,
+            end: item.fecha_salida ? new Date(item.fecha_salida) : null,
             title: " ",
-            color: item.estado === "Confirmada"
+            color: item.estado === "confirmada"
                 ? " #01b574"
-                : item.estado=== "Prereserva"
+                : item.estado=== "pendiente"
                 ? "#ffb547"
                 : null,
           };
         });
-        setEvents(events);
-      }, []);
+        setEvents(eventsParse);
+      }, [books]);
 
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>

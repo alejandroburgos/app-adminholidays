@@ -8,6 +8,10 @@ export const columnsDataCheck = [
     accessor: "fechaAlta",
   },
   {
+    Header: "FECHA ENTRADA",
+    accessor: "fechaEntrada",
+  },
+  {
     Header: "FECHA SALIDA",
     accessor: "fechaSalida",
   },
@@ -40,6 +44,10 @@ export const columnsDataComplex = [
   {
     Header: "LOCALIZADOR",
     accessor: "localizador",
+  },
+  {
+    Header: "FECHA ALTA",
+    accessor: "fechaAlta",
   },
   {
     Header: "FECHA ENTRADA",

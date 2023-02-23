@@ -5,9 +5,10 @@ import Footer from "components/footer/FooterAdmin.js";
 import Navbar from "components/navbar/NavbarAdmin.js";
 import Sidebar from "components/sidebar/Sidebar.js";
 import { SidebarContext } from "contexts/SidebarContext";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import routes from "routes.js";
+import { constants } from "./../../Constants";
 
 // Custom Chakra theme
 export default function Dashboard(props) {
@@ -15,12 +16,49 @@ export default function Dashboard(props) {
   // states and functions
   const [fixed] = useState(false);
   const [toggleSidebar, setToggleSidebar] = useState(false);
+  const sessionUser = JSON.parse(sessionStorage.getItem("login-user"));
+  const [existUser, setExistUser] = useState(false);
+
+  const getUser = async () => {
+    const response = await fetch(`${constants.urlLocal}user/${sessionUser.user.toLowerCase()}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
+    try {
+      const json = await response.json();
+      if (json.ok) {
+        // set token to sessionStorage
+        sessionStorage.setItem("token", json.token);
+        setExistUser(true);
+      } else {
+        // redirect to login
+        window.location.href = "#/auth/login";
+
+        // detele localStorage
+        setExistUser(false);
+        sessionStorage.removeItem("token");
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+
+  useEffect(() => {
+    if (sessionUser) {
+      getUser();
+    } else {
+      window.location.href = "#/auth/login";
+    }
+    }, [sessionUser]);
   // functions for changing the states from components
   const getRoute = () => {
     return window.location.pathname !== "/admin/full-screen-maps";
   };
   const getActiveRoute = (routes) => {
-    let activeRoute = "Default Brand Text";
+    let activeRoute = "";
     for (let i = 0; i < routes.length; i++) {
       if (routes[i].collapse) {
         let collapseActiveRoute = getActiveRoute(routes[i].items);
@@ -136,7 +174,7 @@ export default function Dashboard(props) {
             <Box>
               <Navbar
                 onOpen={onOpen}
-                logoText={"Horizon UI Dashboard PRO"}
+                logoText={"Holidays"}
                 brandText={getActiveRoute(routes)}
                 secondary={getActiveNavbar(routes)}
                 message={getActiveNavbarText(routes)}
@@ -155,7 +193,9 @@ export default function Dashboard(props) {
               pt='50px'>
               <Switch>
                 {getRoutes(routes)}
-                <Redirect from='/' to='/admin/default' />
+                {existUser &&
+                  <Redirect from='/' to='/admin/resumen-principal' />
+                }
               </Switch>
             </Box>
           ) : null}
