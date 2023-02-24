@@ -10,8 +10,10 @@ export const CalendarBooks = () => {
     const [events, setEvents] = useState([{}]);
     const [books, setBooks] = useState([])
 
+    // get session storage
+    const session = JSON.parse(sessionStorage.getItem('login-user'))
     const getBooks = async () => {
-      const response = await fetch(`${constants.urlLocal}books`, {
+      const response = await fetch(`${constants.urlLocal}books/${session.user}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -24,6 +26,7 @@ export const CalendarBooks = () => {
     useEffect(() => {
       getBooks();
     }, []);
+    console.log(books)
     useEffect(() => {
         const eventsParse = books && books.map((item) => {
           return {

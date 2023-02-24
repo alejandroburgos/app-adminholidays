@@ -18,6 +18,7 @@ export default function Dashboard(props) {
   const [toggleSidebar, setToggleSidebar] = useState(false);
   const sessionUser = JSON.parse(sessionStorage.getItem("login-user"));
   const [existUser, setExistUser] = useState(false);
+  console.log("sessionUser", sessionUser)
 
   const getUser = async () => {
     const response = await fetch(`${constants.urlLocal}user/${sessionUser.user.toLowerCase()}`, {
@@ -49,16 +50,15 @@ export default function Dashboard(props) {
   useEffect(() => {
     if (sessionUser) {
       getUser();
-    } else {
-      window.location.href = "#/auth/login";
     }
-    }, [sessionUser]);
+    getUser();
+  }, [sessionUser]);
   // functions for changing the states from components
   const getRoute = () => {
     return window.location.pathname !== "/admin/full-screen-maps";
   };
   const getActiveRoute = (routes) => {
-    let activeRoute = "";
+    let activeRoute = "Default Brand Text";
     for (let i = 0; i < routes.length; i++) {
       if (routes[i].collapse) {
         let collapseActiveRoute = getActiveRoute(routes[i].items);
@@ -174,7 +174,7 @@ export default function Dashboard(props) {
             <Box>
               <Navbar
                 onOpen={onOpen}
-                logoText={"Holidays"}
+                logoText={"Horizon UI Dashboard PRO"}
                 brandText={getActiveRoute(routes)}
                 secondary={getActiveNavbar(routes)}
                 message={getActiveNavbarText(routes)}
@@ -193,7 +193,9 @@ export default function Dashboard(props) {
               pt='50px'>
               <Switch>
                 {getRoutes(routes)}
+                {existUser &&
                   <Redirect from='/' to='/admin/resumen-principal' />
+                }
               </Switch>
             </Box>
           ) : null}
