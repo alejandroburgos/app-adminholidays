@@ -71,7 +71,7 @@ export default function UserReports() {
   }, []);
   useEffect(() => {
 
-      const eventsParse = books.map((item) => {
+      const eventsParse = books && books.map((item) => {
         return {
           start: item.fecha_entrada ? new Date(item.fecha_entrada) : null ,
           end: item.fecha_salida ? new Date(item.fecha_salida) : null,

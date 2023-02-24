@@ -47,7 +47,7 @@ export function SidebarLinks(props) {
           </>
         );
       } else if (
-        route.name !== 'Sign In'
+        route.name !== 'Sign In' && route.name !== 'Perfil'
       ) {
         return (
           <NavLink key={index} to={route.layout + route.path}>

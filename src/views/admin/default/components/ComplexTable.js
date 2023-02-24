@@ -115,7 +115,7 @@ export default function ColumnsTable(props) {
           ))}
         </Thead>
         <Tbody>
-          {books.map((row, index) => {
+          {books && books.map((row, index) => {
             return (
               <Tr key={index}>
                 <Td color={textColor} fontSize='sm'>

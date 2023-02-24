@@ -16,7 +16,7 @@ import SignInCentered from "views/auth/signIn";
 import { CgBookmark } from "react-icons/cg";
 import { AiTwotoneCalendar } from "react-icons/ai";
 import { BsBarChartLine } from "react-icons/bs";
-import { MdLock, MdOutlineShoppingCart } from "react-icons/md";
+import { MdLock, MdOutlineShoppingCart, MdPerson } from "react-icons/md";
 const routes = [
   {
     name: "Resumen principal",
@@ -54,20 +54,13 @@ const routes = [
     component: NFTMarketplace,
     secondary: true,
   },
-  // {
-  //   name: "Data Tables",
-  //   layout: "/admin",
-  //   icon: <Icon as={MdBarChart} width='20px' height='20px' color='inherit' />,
-  //   path: "/data-tables",
-  //   component: DataTables,
-  // },
-  // {
-  //   name: "Profile",
-  //   layout: "/admin",
-  //   path: "/profile",
-  //   icon: <Icon as={MdPerson} width='20px' height='20px' color='inherit' />,
-  //   component: Profile,
-  // },
+  {
+    name: "Perfil",
+    layout: "/admin",
+    path: "/perfil",
+    icon: <Icon as={MdPerson} width='20px' height='20px' color='inherit' />,
+    component: Profile,
+  },
   ,{
     name: "Sign In",
     layout: "/auth",
@@ -75,6 +68,13 @@ const routes = [
     icon: <Icon as={MdLock} width='20px' height='20px' color='inherit' />,
     component: SignInCentered,
   },
+  // {
+  //   name: "Data Tables",
+  //   layout: "/admin",
+  //   icon: <Icon as={MdBarChart} width='20px' height='20px' color='inherit' />,
+  //   path: "/data-tables",
+  //   component: DataTables,
+  // },
   // {
   //   name: "RTL Admin",
   //   layout: "/rtl",

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/sass/styles.scss';
-import { Text, Icon, Button } from "@chakra-ui/react";
+import { Text, Icon, Button, useColorModeValue } from "@chakra-ui/react";
 
 // Custom components
 import Card from "components/card/Card.js";
@@ -93,6 +93,8 @@ export default function BigCalendar(props) {
 }
 const CustomToolbar = (toolbar) => {
 
+    const brandColor = useColorModeValue("brand.500", "white");
+
   const goToBack = () => {
         toolbar.onNavigate('prev');
         toolbar.date.setMonth(moment(toolbar.date).subtract(1, 'month').month());
@@ -127,12 +129,12 @@ const CustomToolbar = (toolbar) => {
 
   return (
     <div>
-        <span className="rbc-toolbar-label-big">{toolbar.label}</span>
+        <Text className="rbc-toolbar-label-big" color={brandColor}>{toolbar.label}</Text>
         <div className="rbc-toolbar">
             <span className="rbc-btn-group">
-                <Button size="xl" onClick={goToBack}><ChevronLeftIcon /> </Button>
-                <Button size="xl" onClick={goToCurrent}>Hoy</Button>
-                <Button size="xl" onClick={goToNext}> <ChevronRightIcon /></Button>
+                <Button size="xl" onClick={goToBack} color={brandColor} ><ChevronLeftIcon /> </Button>
+                <Button size="xl" onClick={goToCurrent} color={brandColor}>Hoy</Button>
+                <Button size="xl" onClick={goToNext} color={brandColor}> <ChevronRightIcon /></Button>
             </span>
 
             {/* <span className="rbc-btn-group">

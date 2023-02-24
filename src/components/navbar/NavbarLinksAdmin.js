@@ -25,6 +25,7 @@ import { MdNotificationsNone, MdInfoOutline } from 'react-icons/md';
 import { FaEthereum } from 'react-icons/fa';
 import routes from 'routes.js';
 import { ThemeEditor } from './ThemeEditor';
+import { useHistory } from 'react-router-dom';
 export default function HeaderLinks(props) {
 	const { secondary } = props;
 	// Chakra Color Mode
@@ -42,11 +43,21 @@ export default function HeaderLinks(props) {
 	);
 	const borderButton = useColorModeValue('secondaryGray.500', 'whiteAlpha.200');
 
+	const history = useHistory();
+	const goToProfile = () => {
+		history.push({
+			pathname: '/admin/perfil',
+		});
+	};
 	const singOut = () => {
 		sessionStorage.removeItem('token');
 		sessionStorage.removeItem('login-user');
 		window.location.href = '#/auth/sign-in';
 	};
+
+	// get session storage
+	const session = JSON.parse(sessionStorage.getItem('login-user'));
+
 
 	return (
 		<Flex
@@ -167,7 +178,8 @@ export default function HeaderLinks(props) {
 						h="40px"
 					/>
 				</MenuButton>
-				<MenuList boxShadow={shadow} p="0px" mt="10px" borderRadius="20px" bg={menuBg} border="none">
+				<MenuList boxShadow={shadow} p="0px" mt="10px" borderRadius="20px" bg={menuBg} border="none"
+					onClick={goToProfile}>
 					<Flex w="100%" mb="0px">
 						<Text
 							ps="20px"
@@ -179,16 +191,18 @@ export default function HeaderLinks(props) {
 							fontSize="sm"
 							fontWeight="700"
 							color={textColor}>
-							👋&nbsp; Hey, Adela
+							👋&nbsp; Hola, { ' ' }
+							{/* first letter uppercase */}
+							{session.user?.charAt(0).toUpperCase() + session.user?.slice(1)}
 						</Text>
 					</Flex>
 					<Flex flexDirection="column" p="10px">
 						<MenuItem _hover={{ bg: 'none' }} _focus={{ bg: 'none' }} borderRadius="8px" px="14px">
-							<Text fontSize="sm">Profile Settings</Text>
+							<Text fontSize="sm">Tu perfil</Text>
 						</MenuItem>
-						<MenuItem _hover={{ bg: 'none' }} _focus={{ bg: 'none' }} borderRadius="8px" px="14px">
+						{/* <MenuItem _hover={{ bg: 'none' }} _focus={{ bg: 'none' }} borderRadius="8px" px="14px">
 							<Text fontSize="sm">Newsletter Settings</Text>
-						</MenuItem>
+						</MenuItem> */}
 						<MenuItem
 							_hover={{ bg: 'none' }}
 							_focus={{ bg: 'none' }}
