@@ -26,7 +26,6 @@ export const CalendarBooks = () => {
     useEffect(() => {
       getBooks();
     }, []);
-    console.log(books)
     useEffect(() => {
         const eventsParse = books && books.map((item) => {
           return {

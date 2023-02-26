@@ -27,6 +27,7 @@ import Menu from "components/menu/MainMenu";
 import { MdCheckCircle, MdCancel, MdOutlineError } from "react-icons/md";
 import { constants } from "Constants";
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
 
 export default function ColumnsTable(props) {
   const { columnsData, tableData, addBook } = props;
@@ -58,7 +59,7 @@ export default function ColumnsTable(props) {
   const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
 
   const session = JSON.parse(sessionStorage.getItem('login-user'))
-
+  const history = useHistory()
   // get all books
   const getBooks = async () => {
     const response = await fetch(`${constants.urlLocal}books/${session.user}`, {
@@ -118,7 +119,11 @@ export default function ColumnsTable(props) {
           {books && books.map((row, index) => {
             return (
               <Tr key={index}>
-                <Td color={textColor} fontSize='sm'>
+                <Td color={textColor} fontSize='sm' onClick={
+                  () => {
+                    history.push(`/admin/reservas/${row.localizador}`)
+                  }
+                }>
                   {row.localizador}
                 </Td>
                 <Td color={textColor} fontSize='sm'>

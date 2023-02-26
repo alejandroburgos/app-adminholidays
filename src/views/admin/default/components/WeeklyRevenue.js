@@ -5,6 +5,7 @@ import {
   Flex,
   Icon,
   Input,
+  Spinner,
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
@@ -37,7 +38,8 @@ export default function WeeklyRevenue(props) {
   const [dataTable, setDataTable] = useState([]);
   const [monthPrices, setMonthPrices] = useState()
   const [year, setYear] = useState(moment().format("YYYY"));
-const session = JSON.parse(sessionStorage.getItem("login-user"));
+  const session = JSON.parse(sessionStorage.getItem("login-user"));
+
   const getDataOfMonths = async () => {
     const response = await fetch(`${constants.urlLocal}month/${session.user}`, {
       method: "GET",
@@ -46,10 +48,13 @@ const session = JSON.parse(sessionStorage.getItem("login-user"));
       },
     });
     const json = await response.json();
-    console.log(json)
+    if (json.ok){
+      const prices = json.month.map((data) => { data.monthPrice = parseInt(data.monthPrice); return data.monthPrice; })
+      setMonthPrices(prices)
+    } else {
+      console.log("error")
+    }
     // convert json.monthPrice to string array
-    const prices = json.map((data) => { data.monthPrice = parseInt(data.monthPrice); return data.monthPrice; })
-    setMonthPrices(prices)
     setDataTable(json);
 
   };
@@ -75,17 +80,11 @@ const session = JSON.parse(sessionStorage.getItem("login-user"));
   // sort days in ascending order
   days.sort((a, b) => a - b);
 
-  // get 12 random data in array
-  const data = [];
-  for (let i = 0; i < 12; i++) {
-    data.push(Math.floor(Math.random() * 1000));
-  }
-
   const data2 = [];
   for (let i = 0; i < 12; i++) {
     data2.push(Math.floor(Math.random() * 500));
   }
-console.log(data, monthPrices)
+
   const barChartDataConsumption = [
     {
       name: "GANANCIAS NETAS",
@@ -224,10 +223,11 @@ console.log(data, monthPrices)
       </Flex>
 
       <Box h='240px' mt='auto'>
-        <BarChart
+       {dataTable.ok ? <BarChart
           chartData={barChartDataConsumption}
           chartOptions={barChartOptionsConsumption}
-        />
+        /> : 
+        <Spinner />}
       </Box>
     </Card>
   );

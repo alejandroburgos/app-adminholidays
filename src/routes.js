@@ -17,6 +17,7 @@ import { CgBookmark } from "react-icons/cg";
 import { AiTwotoneCalendar } from "react-icons/ai";
 import { BsBarChartLine } from "react-icons/bs";
 import { MdLock, MdOutlineShoppingCart, MdPerson } from "react-icons/md";
+import { EditBooking } from "views/admin/edit";
 const routes = [
   {
     name: "Resumen principal",
@@ -39,21 +40,21 @@ const routes = [
     icon: <Icon as={AiTwotoneCalendar} width='20px' height='20px' color='inherit' />,
     component: CalendarBooks,
   },
-  {
-    name: "NFT Marketplace",
-    layout: "/admin",
-    path: "/nft-marketplace",
-    icon: (
-      <Icon
-        as={MdOutlineShoppingCart}
-        width='20px'
-        height='20px'
-        color='inherit'
-      />
-    ),
-    component: NFTMarketplace,
-    secondary: true,
-  },
+  // {
+  //   name: "NFT Marketplace",
+  //   layout: "/admin",
+  //   path: "/nft-marketplace",
+  //   icon: (
+  //     <Icon
+  //       as={MdOutlineShoppingCart}
+  //       width='20px'
+  //       height='20px'
+  //       color='inherit'
+  //     />
+  //   ),
+  //   component: NFTMarketplace,
+  //   secondary: true,
+  // },
   {
     name: "Perfil",
     layout: "/admin",

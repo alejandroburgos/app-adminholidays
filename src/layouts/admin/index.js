@@ -18,7 +18,6 @@ export default function Dashboard(props) {
   const [toggleSidebar, setToggleSidebar] = useState(false);
   const sessionUser = JSON.parse(sessionStorage.getItem("login-user"));
   const [existUser, setExistUser] = useState(false);
-  console.log("sessionUser", sessionUser)
 
   const getUser = async () => {
     const response = await fetch(`${constants.urlLocal}user/${sessionUser.user.toLowerCase()}`, {

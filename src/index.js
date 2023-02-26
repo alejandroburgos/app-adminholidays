@@ -9,6 +9,7 @@ import { ChakraProvider } from "@chakra-ui/react";
 import theme from "theme/theme";
 import { ThemeEditorProvider } from "@hypertheme-editor/chakra-ui";
 
+const session = JSON.parse(sessionStorage.getItem("login-user"));
 ReactDOM.render(
   <ChakraProvider theme={theme}>
     <React.StrictMode>
@@ -16,9 +17,11 @@ ReactDOM.render(
         <HashRouter>
           <Switch>
             <Route path={`/auth`} component={AuthLayout} />
+            {session ? 
             <Route path={`/admin`} component={AdminLayout} />
+            : <Redirect from='/' to='/auth/login' />}
             {/* <Route path={`/rtl`} component={RTLLayout} /> */}
-            <Redirect from='/' to='/admin' />
+            <Redirect from='/' to='/admin/resumen-principal' />
           </Switch>
         </HashRouter>
       </ThemeEditorProvider>
