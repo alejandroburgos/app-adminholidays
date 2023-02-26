@@ -193,9 +193,8 @@ export default function Dashboard(props) {
               pt='50px'>
               <Switch>
                 {getRoutes(routes)}
-                {existUser &&
                   <Redirect from='/' to='/admin/resumen-principal' />
-                }
+                
               </Switch>
             </Box>
           ) : null}

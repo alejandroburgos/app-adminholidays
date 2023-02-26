@@ -15,6 +15,8 @@ import React, { useState } from "react";
 import moment from "moment";
 
 import { MdBarChart } from "react-icons/md";
+import { constants } from "Constants";
+import { useEffect } from "react";
 
 export default function WeeklyRevenue(props) {
   const { ...rest } = props;
@@ -32,7 +34,29 @@ export default function WeeklyRevenue(props) {
     { bg: "whiteAlpha.100" }
   );
 
+  const [dataTable, setDataTable] = useState([]);
+  const [monthPrices, setMonthPrices] = useState()
   const [year, setYear] = useState(moment().format("YYYY"));
+const session = JSON.parse(sessionStorage.getItem("login-user"));
+  const getDataOfMonths = async () => {
+    const response = await fetch(`${constants.urlLocal}month/${session.user}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const json = await response.json();
+    console.log(json)
+    // convert json.monthPrice to string array
+    const prices = json.map((data) => { data.monthPrice = parseInt(data.monthPrice); return data.monthPrice; })
+    setMonthPrices(prices)
+    setDataTable(json);
+
+  };
+  useEffect(() => {
+    getDataOfMonths();
+  }, []);
+
   // get array of all days of this month
   function getDaysArrayByMonth() {
     var daysInMonth = moment().daysInMonth();
@@ -61,11 +85,11 @@ export default function WeeklyRevenue(props) {
   for (let i = 0; i < 12; i++) {
     data2.push(Math.floor(Math.random() * 500));
   }
-
-   const barChartDataConsumption = [
+console.log(data, monthPrices)
+  const barChartDataConsumption = [
     {
       name: "GANANCIAS NETAS",
-      data: data,
+      data: monthPrices,
     },
     {
       name: "GASTOS NETOS",
