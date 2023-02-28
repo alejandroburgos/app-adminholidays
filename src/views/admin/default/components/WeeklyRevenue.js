@@ -12,12 +12,12 @@ import {
 import Card from "components/card/Card.js";
 // Custom components
 import BarChart from "components/charts/BarChart";
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import moment from "moment";
 
 import { MdBarChart } from "react-icons/md";
 import { constants } from "Constants";
-import { useEffect } from "react";
+import DatePicker from "react-multi-date-picker";
 
 export default function WeeklyRevenue(props) {
   const { ...rest } = props;
@@ -37,30 +37,33 @@ export default function WeeklyRevenue(props) {
 
   const [dataTable, setDataTable] = useState([]);
   const [monthPrices, setMonthPrices] = useState()
-  const [year, setYear] = useState(moment().format("YYYY"));
+  const [year, setYear] = useState(moment().format("YYYY"))
   const session = JSON.parse(sessionStorage.getItem("login-user"));
 
-  const getDataOfMonths = async () => {
-    const response = await fetch(`${constants.urlLocal}month/${session.user}`, {
+  const getDataOfMonthsByYear = async () => {
+    setMonthPrices([])
+
+    const response = await fetch(`${constants.urlLocal}month/${session.user}/${year}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
     });
     const json = await response.json();
+    // clear monthPrices
     if (json.ok){
-      const prices = json.month.map((data) => { data.monthPrice = parseInt(data.monthPrice); return data.monthPrice; })
+      const prices = json.month.map((data) => { return data.price; })
       setMonthPrices(prices)
     } else {
       console.log("error")
     }
-    // convert json.monthPrice to string array
+    console.log(monthPrices)
     setDataTable(json);
 
   };
   useEffect(() => {
-    getDataOfMonths();
-  }, []);
+    getDataOfMonthsByYear();
+  }, [year]);
 
   // get array of all days of this month
   function getDaysArrayByMonth() {
@@ -195,16 +198,10 @@ export default function WeeklyRevenue(props) {
           lineHeight='100%'>
           Ganancias anuales
         </Text>
-        <Input
-          type="num"
-          placeholder="Año"
-          w="100px"
-          h="37px"
-          borderRadius="10px"
-          max="2030"
-          min="2010"
-          value={year}
-          onChange={e => setYear(e.target.value)}
+        <DatePicker
+          currentDate={year}
+          onlyYearPicker
+          onChange={(date) => setYear(date)}
         />
         <Button
           align='center'

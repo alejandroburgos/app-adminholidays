@@ -7,3 +7,10 @@ option {
   color: black;
 }
 
+.hover-table :hover {
+  background-color: #ebebeb;
+}
+
+.rmdp-input {
+    width: 100px;
+}

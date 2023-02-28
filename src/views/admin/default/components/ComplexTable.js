@@ -10,8 +10,9 @@ import {
   Thead,
   Tr,
   useColorModeValue,
+  Tooltip,
 } from "@chakra-ui/react";
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   useGlobalFilter,
   usePagination,
@@ -26,7 +27,6 @@ import Menu from "components/menu/MainMenu";
 // Assets
 import { MdCheckCircle, MdCancel, MdOutlineError } from "react-icons/md";
 import { constants } from "Constants";
-import { useState } from "react";
 import { useHistory } from "react-router-dom";
 
 export default function ColumnsTable(props) {
@@ -77,6 +77,13 @@ export default function ColumnsTable(props) {
     getBooks();
   }, []);
 
+  const goToBook = (book) => {
+    history.push({
+      pathname: `/admin/reserva/${book.localizador}`,
+      state: { book: book }
+    })  
+  }
+
   return (
     <Card
       direction='column'
@@ -115,16 +122,15 @@ export default function ColumnsTable(props) {
             </Tr>
           ))}
         </Thead>
-        <Tbody>
+        <Tbody  className='hover-table'>
           {books && books.map((row, index) => {
             return (
               <Tr key={index}>
-                <Td color={textColor} fontSize='sm' onClick={
-                  () => {
-                    history.push(`/admin/reservas/${row.localizador}`)
-                  }
-                }>
-                  {row.localizador}
+                <Td color={textColor} fontSize='sm' 
+                    onClick={() => goToBook(row)}>
+                      <Tooltip hasArrow label='Click para editar o eliminar' bg='red.600'>
+                        <b>{row.localizador}</b>
+                      </Tooltip>
                 </Td>
                 <Td color={textColor} fontSize='sm'>
                   {moment(row.fecha_alta).format("DD/MM/YYYY")}

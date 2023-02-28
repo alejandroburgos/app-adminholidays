@@ -52,11 +52,11 @@ export default function UserReports() {
   const boxBg = useColorModeValue("secondaryGray.300", "whiteAlpha.100");
   const [events, setEvents] = useState([{}]);
   const [books, setBooks] = useState([])
-
+  const [sumOfAllBooks, setSumOfAllBooks] = useState()
   const session = JSON.parse(sessionStorage.getItem('login-user'))
 
   const getBooks = async () => {
-    const response = await fetch(`${constants.urlLocal}books/${session.user}`, {
+    const response = await fetch(`${constants.urlLocal}books/${session.user}/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -64,13 +64,18 @@ export default function UserReports() {
     });
     const json = await response.json();
     setBooks(json);
-
+    const sum = json.reduce((acc, item) => {
+      return acc + item.precio
+    }, 0)
+    setSumOfAllBooks(sum)
+    console.log(sumOfAllBooks)
+    console.log(json)
   };
   useEffect(() => {
     getBooks();
   }, []);
-  useEffect(() => {
 
+  useEffect(() => {
       const eventsParse = books && books.map((item) => {
         return {
           start: item.fecha_entrada ? new Date(item.fecha_entrada) : null ,
@@ -118,7 +123,7 @@ export default function UserReports() {
             />
           }
           name='Gastos anuales'
-          value='100,00€'
+          value={sumOfAllBooks + ' €'}
         />
         {/* <MiniStatistics growth='+23%' name='Sales' value='$574.34' /> */}
 

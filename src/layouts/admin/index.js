@@ -69,6 +69,8 @@ export default function Dashboard(props) {
         if (categoryActiveRoute !== activeRoute) {
           return categoryActiveRoute;
         }
+      } else if (routes[i].hidden) {
+        return routes[i].name
       } else {
         if (
           window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
@@ -92,6 +94,9 @@ export default function Dashboard(props) {
         if (categoryActiveNavbar !== activeNavbar) {
           return categoryActiveNavbar;
         }
+        
+      } else if (routes[i].hidden) {
+        return null
       } else {
         if (
           window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
@@ -115,6 +120,8 @@ export default function Dashboard(props) {
         if (categoryActiveNavbar !== activeNavbar) {
           return categoryActiveNavbar;
         }
+      } else if (routes[i].hidden) {
+        return null
       } else {
         if (
           window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
@@ -135,14 +142,6 @@ export default function Dashboard(props) {
             key={key}
           />
         );
-      }
-      if (prop.collapse) {
-        return getRoutes(prop.items);
-      }
-      if (prop.category) {
-        return getRoutes(prop.items);
-      } else {
-        return null;
       }
     });
   };

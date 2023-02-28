@@ -52,7 +52,9 @@ export default function HeaderLinks(props) {
 	const singOut = () => {
 		sessionStorage.removeItem('token');
 		sessionStorage.removeItem('login-user');
-		window.location.href = '#/auth/sign-in';
+		history.push({
+			pathname: '/auth/sign-in',
+		});
 	};
 
 	// get session storage
@@ -70,25 +72,6 @@ export default function HeaderLinks(props) {
 			borderRadius="30px"
 			boxShadow={shadow}>
 			{/* <SearchBar mb={secondary ? { base: '10px', md: 'unset' } : 'unset'} me="10px" borderRadius="30px" /> */}
-			<Flex
-				bg={ethBg}
-				display={secondary ? 'flex' : 'none'}
-				borderRadius="30px"
-				ms="auto"
-				p="6px"
-				align="center"
-				me="6px">
-				<Flex align="center" justify="center" bg={ethBox} h="29px" w="29px" borderRadius="30px" me="7px">
-					<Icon color={ethColor} w="9px" h="14px" as={FaEthereum} />
-				</Flex>
-				<Text w="max-content" color={ethColor} fontSize="sm" fontWeight="700" me="6px">
-					1,924
-					<Text as="span" display={{ base: 'none', md: 'unset' }}>
-						{' '}
-						ETH
-					</Text>
-				</Text>
-			</Flex>
 			<SidebarResponsive routes={routes} />
 			<Menu>
 				<MenuButton p="0px">
@@ -178,8 +161,7 @@ export default function HeaderLinks(props) {
 						h="40px"
 					/>
 				</MenuButton>
-				<MenuList boxShadow={shadow} p="0px" mt="10px" borderRadius="20px" bg={menuBg} border="none"
-					onClick={goToProfile}>
+				<MenuList boxShadow={shadow} p="0px" mt="10px" borderRadius="20px" bg={menuBg} border="none">
 					<Flex w="100%" mb="0px">
 						<Text
 							ps="20px"
@@ -197,7 +179,7 @@ export default function HeaderLinks(props) {
 						</Text>
 					</Flex>
 					<Flex flexDirection="column" p="10px">
-						<MenuItem _hover={{ bg: 'none' }} _focus={{ bg: 'none' }} borderRadius="8px" px="14px">
+						<MenuItem _hover={{ bg: 'none' }} _focus={{ bg: 'none' }} borderRadius="8px" px="14px" onClick={goToProfile}>
 							<Text fontSize="sm">Tu perfil</Text>
 						</MenuItem>
 						{/* <MenuItem _hover={{ bg: 'none' }} _focus={{ bg: 'none' }} borderRadius="8px" px="14px">
@@ -209,9 +191,7 @@ export default function HeaderLinks(props) {
 							color="red.400"
 							borderRadius="8px"
 							px="14px"
-							onClick={() => {
-								singOut();
-							}}
+							onClick={singOut}
 							>
 							<Text fontSize="sm">Cerrar sesión</Text>
 						</MenuItem>

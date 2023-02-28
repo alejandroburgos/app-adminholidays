@@ -18,6 +18,7 @@ import { AiTwotoneCalendar } from "react-icons/ai";
 import { BsBarChartLine } from "react-icons/bs";
 import { MdLock, MdOutlineShoppingCart, MdPerson } from "react-icons/md";
 import { EditBooking } from "views/admin/edit";
+import { BooksDetails } from "views/admin/booksDetails";
 const routes = [
   {
     name: "Resumen principal",
@@ -25,6 +26,7 @@ const routes = [
     path: "/resumen-principal",
     icon: <Icon as={BsBarChartLine} width='20px' height='20px' color='inherit' />,
     component: MainDashboard,
+    hidden: false
   },
   {
     name: "Reservas",
@@ -32,6 +34,15 @@ const routes = [
     path: "/reservas",
     icon: <Icon as={CgBookmark} width='20px' height='20px' color='inherit' />,
     component: Books,
+    hidden: false
+  },
+  {
+    name: "Ver reserva",
+    layout: "/admin",
+    path: "/reserva/:id",
+    icon: <Icon as={CgBookmark} width='20px' height='20px' color='inherit' />,
+    component: BooksDetails,
+    hidden: true,
   },
   {
     name: "Calendario",
@@ -39,6 +50,7 @@ const routes = [
     path: "/calendario",
     icon: <Icon as={AiTwotoneCalendar} width='20px' height='20px' color='inherit' />,
     component: CalendarBooks,
+    hidden: false
   },
   // {
   //   name: "NFT Marketplace",
@@ -61,13 +73,14 @@ const routes = [
     path: "/perfil",
     icon: <Icon as={MdPerson} width='20px' height='20px' color='inherit' />,
     component: Profile,
+    hidden: true
   },
   ,{
     name: "Sign In",
     layout: "/auth",
     path: "/sign-in",
     icon: <Icon as={MdLock} width='20px' height='20px' color='inherit' />,
-    component: SignInCentered,
+    component: SignInCentered
   },
   // {
   //   name: "Data Tables",

@@ -47,7 +47,8 @@ export function SidebarLinks(props) {
           </>
         );
       } else if (
-        route.name !== 'Sign In' && route.name !== 'Perfil'
+        route.layout === "/admin" &&
+        !route.hidden
       ) {
         return (
           <NavLink key={index} to={route.layout + route.path}>

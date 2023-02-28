@@ -157,6 +157,7 @@ function SignIn() {
               isRequired={true}
               variant='auth'
               fontSize='sm'
+              id="email"
               ms={{ base: "0px", md: "0px" }}
               type='email'
               placeholder='mail@aleburgos.es'
@@ -178,6 +179,7 @@ function SignIn() {
             <InputGroup size='md'>
               <Input
                 isRequired={true}
+                id="password"
                 fontSize='sm'
                 placeholder='Min. 8 characters'
                 mb='24px'
