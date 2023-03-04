@@ -1,6 +1,6 @@
 
 // Chakra imports
-import { Box, Grid } from "@chakra-ui/react";
+import { Avatar, Box, Button, Grid } from "@chakra-ui/react";
 
 // Custom components
 import Banner from "views/admin/profile/components/Banner";
@@ -12,71 +12,72 @@ import Upload from "views/admin/profile/components/Upload";
 
 // Assets
 import banner from "assets/img/auth/banner.png";
-import avatar from "assets/img/avatars/avatar4.png";
+// import avatar from "assets/img/avatars/avatar4.png";
 import React from "react";
-
+import { constants } from "Constants";
+import { TemplateEmail } from "components/nodemailer/TemplateEmail";
 export default function Overview() {
 
   // session storage
   const session = JSON.parse(sessionStorage.getItem("login-user"));
 
+  // send nodemail
+  const sendEmail = () => {
+    fetch(`${constants.urlLocal}sendEmail`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: "ale888@hotmail.es",
+        subject: "test",
+        text: "test",
+        html: html,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      });
+  };
+
+  console.log(TemplateEmail)
+  const html = `
+  <div style="background-color: #f5f5f5; padding: 20px;">
+    <div style="background-color: #fff; padding: 20px; border-radius: 10px;">
+      <h1 style="text-align: center; color: #000;">Hola ${session.user}</h1>
+      <p style="text-align: center; color: #000;">
+        Te recordamos que tienes una reserva para el día 20 de Julio a las 10:00 hs.
+        Por favor, recuerda contactar al cliente para confirmar la hora de llegada.
+      </p>
+      <div style="text-align: center;">
+        <a href="https://www.google.com" style="text-decoration: none; color: #fff;">
+          <button style="background-color: #000; padding: 10px 20px; border: none; border-radius: 5px;">
+            Ver reserva
+          </button>
+        </a>
+    </div>
+  </div>`
+  
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
       {/* Main Fields */}
       <Grid
         templateColumns={{
           base: "1fr",
-          lg: "1.34fr 1fr 1.62fr",
+          lg: "repeat(2, 1fr)",
         }}
         templateRows={{
           base: "repeat(3, 1fr)",
           lg: "1fr",
         }}
-        gap={{ base: "20px", xl: "20px" }}>
+        gap={{ base: "20px", xl: "20px" }}
+      >
         <Banner
           gridArea='1 / 1 / 2 / 2'
           banner={banner}
-          avatar={avatar}
           name={session.user}
-          job='Product Designer'
-          posts='17'
-          followers='9.7k'
-          following='274'
-        />
-        <Storage
-          gridArea={{ base: "2 / 1 / 3 / 2", lg: "1 / 2 / 2 / 3" }}
-          used={25.6}
-          total={50}
-        />
-        <Upload
-          gridArea={{
-            base: "3 / 1 / 4 / 2",
-            lg: "1 / 3 / 2 / 4",
-          }}
-          minH={{ base: "auto", lg: "420px", "2xl": "365px" }}
-          pe='20px'
-          pb={{ base: "100px", lg: "20px" }}
-        />
-      </Grid>
-      <Grid
-        mb='20px'
-        templateColumns={{
-          base: "1fr",
-          lg: "repeat(2, 1fr)",
-          "2xl": "1.34fr 1.62fr 1fr",
-        }}
-        templateRows={{
-          base: "1fr",
-          lg: "repeat(2, 1fr)",
-          "2xl": "1fr",
-        }}
-        gap={{ base: "20px", xl: "20px" }}>
-        <Projects
-          gridArea='1 / 2 / 2 / 2'
-          banner={banner}
-          avatar={avatar}
-          name='Adela Parkson'
-          job='Product Designer'
+          job='aleburgosmoreno@gmail.com'
           posts='17'
           followers='9.7k'
           following='274'
@@ -96,6 +97,26 @@ export default function Overview() {
           }}
         />
       </Grid>
+      {/* BUTTON SAVE */}
+      <Box
+        display='flex'
+        justifyContent='flex-end'
+        mt='20px'
+        mb='20px'
+        mr='20px'>
+        <Button
+          colorScheme='blue'
+          variant='solid'
+          size='md'
+          w='100px'
+          h='40px'
+          onClick={sendEmail}>
+          Guardar
+        </Button>
+      </Box>
+
     </Box>
   );
 }
+
+

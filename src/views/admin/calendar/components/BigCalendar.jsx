@@ -8,13 +8,19 @@ import Card from "components/card/Card.js";
 import moment from "moment";
 import 'moment/locale/es';
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { useHistory } from "react-router-dom";
 
 export default function BigCalendar(props) {
   const {events, ...rest } = props;
 
   const localizer = momentLocalizer(moment);
-  
+  const history = useHistory();
+
   const handleEventSelection = (e) => {
+    history.push({
+      pathname: `/admin/reserva/${e.localizador}`,
+      state: { book: e }
+    }) 
   }
     
   const handleSelectSlot = (e) => {   

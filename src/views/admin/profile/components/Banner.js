@@ -1,5 +1,6 @@
 // Chakra imports
 import { Avatar, Box, Flex, Text, useColorModeValue } from "@chakra-ui/react";
+import { randomColor } from "@chakra-ui/theme-tools";
 import Card from "components/card/Card.js";
 import React from "react";
 
@@ -12,6 +13,24 @@ export default function Banner(props) {
     "white !important",
     "#111C44 !important"
   );
+
+  // randomColor
+  const randomColor = () => {
+    const colors = [
+      "red.500",
+      "orange.500",
+      "yellow.500",
+      "green.500",
+      "teal.500",
+      "blue.500",
+      "cyan.500",
+      "purple.500",
+      "pink.500",
+    ];
+    return colors[Math.floor(Math.random() * colors.length)];
+  };
+
+
   return (
     <Card mb={{ base: "0px", lg: "20px" }} align='center'>
       <Box
@@ -23,7 +42,9 @@ export default function Banner(props) {
       />
       <Avatar
         mx='auto'
-        src={avatar}
+        // src={avatar}
+        name={name}
+        bg={randomColor()}
         h='87px'
         w='87px'
         mt='-43px'
@@ -42,7 +63,7 @@ export default function Banner(props) {
             {posts}
           </Text>
           <Text color={textColorSecondary} fontSize='sm' fontWeight='400'>
-            Posts
+            Reservas
           </Text>
         </Flex>
         <Flex mx='auto' me='60px' align='center' direction='column'>
@@ -50,7 +71,7 @@ export default function Banner(props) {
             {followers}
           </Text>
           <Text color={textColorSecondary} fontSize='sm' fontWeight='400'>
-            Followers
+            Ganancias totales
           </Text>
         </Flex>
         <Flex mx='auto' align='center' direction='column'>
@@ -58,7 +79,7 @@ export default function Banner(props) {
             {following}
           </Text>
           <Text color={textColorSecondary} fontSize='sm' fontWeight='400'>
-            Following
+            Reservas totales
           </Text>
         </Flex>
       </Flex>

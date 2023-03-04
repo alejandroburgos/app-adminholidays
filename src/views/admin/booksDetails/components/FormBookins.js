@@ -29,7 +29,7 @@ export const FormBookins = (props) => {
         "0px 18px 40px rgba(112, 144, 176, 0.12)",
         "none"
     );
-    const bg = useColorModeValue("white", "#1B254B");
+    const bg = useColorModeValue("white", "navy.900");
     
     const [openDelete, setOpenDelete] = useState(false)
 
@@ -105,9 +105,6 @@ export const FormBookins = (props) => {
         }
     };
 
-
-
-
     useEffect(() => {
         if (history.location.state) {
             getBookById(history.location.state.book._id);
@@ -178,7 +175,7 @@ export const FormBookins = (props) => {
             <Grid templateColumns="repeat(2, 1fr)" gap={6}>
                 <FormControl id="localizador" isRequired>
                     <FormLabel>Localizador</FormLabel>
-                    <Input
+                    <Input color={textColor}
                         className="rmdp-calendar rmdp-calendar--open"
                         disabled={disabled}
                         type="text"
@@ -188,7 +185,7 @@ export const FormBookins = (props) => {
                 </FormControl>
                 <FormControl id="fechaAlta" isRequired>
                     <FormLabel>Fecha Alta</FormLabel>
-                    <Input
+                    <Input color={textColor}
                         disabled={disabled}
                         type="date"
                         value={fechaAlta && new Date(fechaAlta).toISOString().split("T")[0]}
@@ -198,13 +195,13 @@ export const FormBookins = (props) => {
                 </FormControl>
                 <FormControl id="fechaEntrada" isRequired>
                     <FormLabel>Fecha Entrada</FormLabel>
-                    {/* <Input
+                    <Input color={textColor}
                         disabled={disabled}
                         type="date"
                         value={fechaEntrada && new Date(fechaEntrada).toISOString().split("T")[0]}
                         onChange={(e) => setFechaEntrada(e.target.value)}
-                    /> */}
-                    <DatePicker
+                    />
+                    {/* <DatePicker
                         style={{
                             width: "100%",
                             boxSizing: "border-box",
@@ -243,11 +240,17 @@ export const FormBookins = (props) => {
                             });
                             return props;
                         }}
-                    />
+                    /> */}
                 </FormControl>
                 <FormControl id="fechaSalida" isRequired>
                     <FormLabel>Fecha Salida</FormLabel>
-                    <DatePicker
+                    <Input color={textColor}
+                        disabled={disabled}
+                        type="date"
+                        value={fechaSalida && new Date(fechaSalida).toISOString().split("T")[0]}
+                        onChange={(e) => setFechaSalida(e.target.value)}
+                    />
+                    {/* <DatePicker
                         style={{
                             width: "100%",
                             boxSizing: "border-box",
@@ -286,7 +289,7 @@ export const FormBookins = (props) => {
                             });
                             return props;
                         }}
-                    />
+                    /> */}
                 </FormControl>
                 <FormControl id="estado" isRequired>
                     <FormLabel>Estado</FormLabel>
@@ -308,7 +311,7 @@ export const FormBookins = (props) => {
                 </FormControl>
                 <FormControl id="adultos" isRequired>
                     <FormLabel>Adultos</FormLabel>
-                    <Input
+                    <Input color={textColor}
                         type="number"
                         disabled={disabled}
                         value={adultos}
@@ -317,7 +320,7 @@ export const FormBookins = (props) => {
                 </FormControl>
                 <FormControl id="ninos" isRequired>
                     <FormLabel>Niños</FormLabel>
-                    <Input
+                    <Input color={textColor}
                         type="number"
                         disabled={disabled}
                         value={ninos}
@@ -326,7 +329,7 @@ export const FormBookins = (props) => {
                 </FormControl>
                 <FormControl id="bebes" isRequired>
                     <FormLabel>Bebés</FormLabel>
-                    <Input
+                    <Input color={textColor}
                         type="number"
                         disabled={disabled}
                         value={bebes}
@@ -335,7 +338,7 @@ export const FormBookins = (props) => {
                 </FormControl>
                 <FormControl id="alojamiento" isRequired>
                     <FormLabel>Alojamiento</FormLabel>
-                    <Input
+                    <Input color={textColor}
                         type="text"
                         disabled={disabled}
                         value={alojamiento}
@@ -345,7 +348,7 @@ export const FormBookins = (props) => {
                 </FormControl>
                 <FormControl id="precio" isRequired>
                     <FormLabel>Precio</FormLabel>
-                    <Input
+                    <Input color={textColor}
                         type="number"
                         disabled={disabled}
                         value={precio}
@@ -355,7 +358,7 @@ export const FormBookins = (props) => {
             </Grid>
             <Grid templateColumns="repeat(2, 1fr)" gap={6}>
                 <Flex justifyContent="flex-start" mt={6}>
-                    <Button
+                    <Button color={textColor}
                         colorScheme="red"
                         variant="outline"
                         ml={3}
@@ -367,7 +370,7 @@ export const FormBookins = (props) => {
                     </Button>
                 </Flex>
                 <Flex justifyContent="flex-end" mt={6}>
-                    {!disabled && <Button
+                    {!disabled && <Button color={textColor}
                         colorScheme="brand"
                         variant="outline"
                         mr={3}

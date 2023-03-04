@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from 'react'
 import { Box, SimpleGrid, useColorModeValue } from '@chakra-ui/react'
-import MiniCalendar from 'components/calendar/MiniCalendar'
-import tableDataComplex from "views/admin/default/variables/tableDataComplex.json";
 import BigCalendar from './components/BigCalendar';
 import { constants } from 'Constants';
 
@@ -29,6 +27,8 @@ export const CalendarBooks = () => {
     useEffect(() => {
         const eventsParse = books && books.map((item) => {
           return {
+            _id: item._id,
+            localizador: item.localizador,
             start: item.fecha_entrada ? new Date(item.fecha_entrada) : null ,
             end: item.fecha_salida ? new Date(item.fecha_salida) : null,
             title: " ",

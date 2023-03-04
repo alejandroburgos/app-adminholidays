@@ -89,24 +89,25 @@ export default function HeaderLinks(props) {
 					maxW={{ base: '360px', md: 'unset' }}>
 					<Flex jusitfy="space-between" w="100%" mb="20px">
 						<Text fontSize="md" fontWeight="600" color={textColor}>
-							Notifications
+							Notificaciones
 						</Text>
 						<Text fontSize="sm" fontWeight="500" color={textColorBrand} ms="auto" cursor="pointer">
-							Mark all read
+							Leer todo
 						</Text>
 					</Flex>
 					<Flex flexDirection="column">
 						<MenuItem _hover={{ bg: 'none' }} _focus={{ bg: 'none' }} px="0" borderRadius="8px" mb="10px">
-							<ItemContent info="Horizon UI Dashboard PRO" aName="Alicia" />
+							<ItemContent info="Reserva en 2 semanas" description="localizador 2313"  />
 						</MenuItem>
 						<MenuItem _hover={{ bg: 'none' }} _focus={{ bg: 'none' }} px="0" borderRadius="8px" mb="10px">
-							<ItemContent info="Horizon Design System Free" aName="Josh Henry" />
+							<ItemContent info="Reserva en 3 dias" 
+								description="localizador 2313" />
 						</MenuItem>
 					</Flex>
 				</MenuList>
 			</Menu>
 
-			<Menu>
+			{/* <Menu>
 				<MenuButton p="0px">
 					<Icon mt="6px" as={MdInfoOutline} color={navbarIcon} w="18px" h="18px" me="10px" />
 				</MenuButton>
@@ -122,30 +123,13 @@ export default function HeaderLinks(props) {
 					maxW={{ base: '360px', md: 'unset' }}>
 					<Image src={navImage} borderRadius="16px" mb="28px" />
 					<Flex flexDirection="column">
-						<Link w="100%" href="https://horizon-ui.com/pro">
-							<Button w="100%" h="44px" mb="10px" variant="brand">
-								Buy Horizon UI PRO
-							</Button>
-						</Link>
-						<Link w="100%" href="https://horizon-ui.com/documentation/docs/introduction">
-							<Button
-								w="100%"
-								h="44px"
-								mb="10px"
-								border="1px solid"
-								bg="transparent"
-								borderColor={borderButton}>
-								See Documentation
-							</Button>
-						</Link>
-						<Link w="100%" href="https://github.com/horizon-ui/horizon-ui-chakra">
-							<Button w="100%" h="44px" variant="no-hover" color={textColor} bg="transparent">
-								Try Horizon Free
-							</Button>
-						</Link>
+						<MenuItem _hover={{ bg: 'none' }} _focus={{ bg: 'none' }} px="0" borderRadius="8px" mb="10px">
+							<ItemContent info="Reserva en 1 semana" description="fecha de entrada 24-04-2023" />
+						</MenuItem>
+
 					</Flex>
 				</MenuList>
-			</Menu>
+			</Menu> */}
 
 			<ThemeEditor navbarIcon={navbarIcon} />
 
@@ -154,7 +138,7 @@ export default function HeaderLinks(props) {
 					<Avatar
 						_hover={{ cursor: 'pointer' }}
 						color="white"
-						name="Adela Parkson"
+						name={session.user?.charAt(0).toUpperCase() + session.user?.slice(1)}
 						bg="#11047A"
 						size="sm"
 						w="40px"

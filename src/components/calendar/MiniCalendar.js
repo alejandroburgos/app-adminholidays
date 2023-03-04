@@ -3,7 +3,7 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import 'react-big-calendar/lib/sass/styles.scss';
 import "assets/css/MiniCalendar.css";
 
-import { Text, Icon, Button } from "@chakra-ui/react";
+import { Text, Icon, Button, useColorModeValue } from "@chakra-ui/react";
 // Chakra imports
 import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 // Custom components
@@ -11,15 +11,23 @@ import Card from "components/card/Card.js";
 import moment from "moment";
 import 'moment/locale/es';
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { useHistory } from "react-router-dom";
 export default function MiniCalendar(props) {
   const {events, ...rest } = props;
 
   const localizer = momentLocalizer(moment);
+  const history = useHistory();
   
   const handleEventSelection = (e) => {
+    console.log(e)
+    history.push({
+        pathname: `/admin/reserva/${e.localizador}`,
+        state: { book: e }
+    })  
   }
     
-  const handleSelectSlot = (e) => {   
+  const handleSelectSlot = (e) => {  
+     
   }
   const eventStyleGetter = (e) => {
     return {
@@ -133,15 +141,16 @@ const CustomToolbar = (toolbar) => {
       monthView[0].classList.remove('active')
   };
 
+  const textColor = useColorModeValue('secondaryGray.900', 'white');
 
   return (
       <div className="rbc-toolbar">
-          <span className="rbc-btn-group">
-              <Button size="xs" onClick={goToBack}><ChevronLeftIcon /> </Button>
-              <Button size="xs" onClick={goToCurrent}>Hoy</Button>
-              <Button size="xs" onClick={goToNext}> <ChevronRightIcon /></Button>
-          </span>
-          <span className="rbc-toolbar-label">{toolbar.label}</span>
+          <Text className="rbc-btn-group" color={textColor}>
+              <Button size="xs" colorScheme={textColor} onClick={goToBack}><ChevronLeftIcon /> </Button>
+              <Button size="xs" colorScheme={textColor} onClick={goToCurrent}>Hoy</Button>
+              <Button size="xs" colorScheme={textColor} onClick={goToNext}> <ChevronRightIcon /></Button>
+          </Text>
+          <Text className="rbc-toolbar-label" color={textColor}>{toolbar.label}</Text>
 
           {/* <span className="rbc-btn-group">
               <button type="button" className="rbc-week-view" onClick={goToWeek}>Semana</button>
