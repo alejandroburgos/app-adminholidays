@@ -29,7 +29,7 @@ export default function Overview() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        email: "ale888@hotmail.es",
+        email: "aleburgosmoreno@gmail.com",
         subject: "test",
         text: "test",
         html: html,
@@ -41,7 +41,6 @@ export default function Overview() {
       });
   };
 
-  console.log(TemplateEmail)
   const html = `
   <div style="background-color: #f5f5f5; padding: 20px;">
     <div style="background-color: #fff; padding: 20px; border-radius: 10px;">
@@ -86,6 +85,7 @@ export default function Overview() {
           gridArea={{ base: "2 / 1 / 3 / 2", lg: "1 / 2 / 2 / 3" }}
           minH='365px'
           pe='20px'
+          session={session}
         />
         <Notifications
           used={25.6}

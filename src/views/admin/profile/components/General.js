@@ -2,12 +2,14 @@
 import { SimpleGrid, Text, useColorModeValue } from "@chakra-ui/react";
 // Custom components
 import Card from "components/card/Card.js";
-import React from "react";
+import { constants } from "Constants";
+import React, { useEffect, useState } from "react";
 import Information from "views/admin/profile/components/Information";
+import AddInformation from "./AddInformation";
 
 // Assets
 export default function GeneralInformation(props) {
-  const { ...rest } = props;
+  const {session, ...rest } = props;
   // Chakra Color Mode
   const textColorPrimary = useColorModeValue("secondaryGray.900", "white");
   const textColorSecondary = "gray.400";
@@ -15,6 +17,43 @@ export default function GeneralInformation(props) {
     "0px 18px 40px rgba(112, 144, 176, 0.12)",
     "unset"
   );
+
+  const [properties, setProperties] = useState([])
+
+  // get properties
+  const getProperties = async () => {
+    try {
+      const response = await fetch(`${constants.urlLocal}property/${session.user}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      setProperties(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteProperty = async () => {
+    const response = await fetch(`${constants.urlLocal}property/${session.user}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: name,
+      }),
+    });
+    const data = await response.json();
+    console.log(data);
+  };
+
+  useEffect(() => {
+    getProperties();
+  }, [properties]);
+  
   return (
     <Card mb={{ base: "0px", "2xl": "20px" }} {...rest}>
       <Text
@@ -29,12 +68,20 @@ export default function GeneralInformation(props) {
         Aquí puedes encontrar información general sobre tu perfil
       </Text>
       <SimpleGrid columns='2' gap='20px'>
-        <Information
+        {properties && properties.map((p, i) => (
+          <Information 
+          key={i}
           boxShadow={cardShadow}
-          title='Education'
-          value='Stanford University'
-        />
-        <Information
+          title='Propiedad'
+          value={p.name}
+          />
+        ))}
+        <AddInformation
+          boxShadow={cardShadow}
+          session={session}
+          title='Propiedad'
+          value='Finca Los Acebuches'/>
+        {/* <Information
           boxShadow={cardShadow}
           title='Languages'
           value='English, Spanish, Italian'
@@ -58,7 +105,7 @@ export default function GeneralInformation(props) {
           boxShadow={cardShadow}
           title='Birthday'
           value='20 July 1986'
-        />
+        /> */}
       </SimpleGrid>
     </Card>
   );

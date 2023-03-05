@@ -19,7 +19,7 @@ ReactDOM.render(
             <Route path={`/auth`} component={AuthLayout} />
             {session ? 
             <Route path={`/admin`} component={AdminLayout} />
-            : <Redirect from='/' to='/auth/login' />}
+            : <Redirect from='/' to='/auth/sign-in' />}
             {/* <Route path={`/rtl`} component={RTLLayout} /> */}
             <Redirect from='/' to='/admin/resumen-principal' />
           </Switch>

@@ -67,9 +67,10 @@ export default function UserReports() {
     const sum = json.reduce((acc, item) => {
       return acc + item.precio
     }, 0)
-    setSumOfAllBooks(sum)
-    console.log(sumOfAllBooks)
-    console.log(json)
+    const sum1 = sum / 1.12
+    // redonde sum1 a 2 decimales
+    const sum2 = Math.round(sum1 * 100) / 100
+    setSumOfAllBooks(sum2)
   };
   useEffect(() => {
     getBooks();
@@ -111,7 +112,7 @@ export default function UserReports() {
             />
           }
           name='Ganancias anuales'
-          value='350,00€'
+          value={sumOfAllBooks + ' €'}
         />
         <MiniStatistics
           startContent={
