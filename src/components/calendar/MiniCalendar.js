@@ -12,6 +12,7 @@ import moment from "moment";
 import 'moment/locale/es';
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { useHistory } from "react-router-dom";
+import { BsCircleFill } from "react-icons/bs";
 export default function MiniCalendar(props) {
   const {events, ...rest } = props;
 
@@ -80,7 +81,15 @@ export default function MiniCalendar(props) {
           }}
           views={['month', 'week']}
           components={{ toolbar: _props => <CustomToolbar {..._props} handleSelectSlot={handleSelectSlot} />,
+          event: _props => {
+            return (
+              <div style={{display: 'flex'}}>
+                  <BsCircleFill color={_props.event.randomColor} />
+                  {_props.event.nombre_viajero}
+              </div>
+            )
           }}
+        }
       />
       {/* <Calendar
       tileClassName={({ date, view }) => {

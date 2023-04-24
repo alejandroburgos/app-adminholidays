@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 // Chakra imports
 import {
@@ -47,6 +47,8 @@ export default function Banner(props) {
   const [bebes, setBebes] = useState(0)
   const [alojamiento, setAlojamiento] = useState('')
   const [precio, setPrecio] = useState('')
+  const [nombreViajero, setNombreViajero] = useState('')
+  const [properties, setProperties] = useState([])
 
   // get user
   const session = JSON.parse(sessionStorage.getItem('login-user'))
@@ -64,6 +66,7 @@ export default function Banner(props) {
         fecha_entrada: fechaEntrada,
         fecha_salida: fechaSalida,
         estado: estado,
+        nombre_viajero: nombreViajero,
         adultos: adultos,
         ninos: ninos,
         bebes: bebes,
@@ -78,6 +81,25 @@ export default function Banner(props) {
     }
   }
 
+  const getProperties = async () => {
+    try {
+      const response = await fetch(`${constants.urlLocal}property/${session.user}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+      setProperties(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getProperties()
+  }, [])
+  
 
   return (
     <>
@@ -150,7 +172,7 @@ export default function Banner(props) {
                     />
                   </FormControl>
                 </SimpleGrid>
-                <SimpleGrid columns={1} spacing={2}>
+                <SimpleGrid columns={estado === 'confirmada' ? 2 : 1} spacing={2}>
                   <FormControl>
                     <FormLabel>Estado</FormLabel>
                     <Select onChange={(e) => setEstado(e.target.value)}
@@ -167,6 +189,12 @@ export default function Banner(props) {
                       <option value='confirmada'>Confirmada</option>
                     </Select>
                   </FormControl>
+                  {estado === 'confirmada' && <FormControl>
+                    <FormLabel>Nombre viajero</FormLabel>
+                    <Input type="text" color={textColor} placeholder='Nombre viajero'
+                      onChange={(e) => setNombreViajero(e.target.value)}
+                    />
+                  </FormControl>}
                 </SimpleGrid>
                 <SimpleGrid columns={3} spacing={2}>
                   <FormControl>
@@ -191,9 +219,15 @@ export default function Banner(props) {
                 <SimpleGrid columns={2} spacing={2}>
                   <FormControl>
                     <FormLabel>Alojamiento</FormLabel>
-                    <Input placeholder='Alojamiento' color={textColor}
-                      onChange={(e) => setAlojamiento(e.target.value)}
-                    />
+                    <Select onChange={(e) => setAlojamiento(e.target.value)}
+                    color={textColor}
+                    value={alojamiento}
+                    >
+                      <option value=''>Selecciona un alojamiento</option>
+                        {properties.map((property) => (
+                            <option key={property._id} value={property.name}>{property.name}</option>
+                        ))}
+                    </Select>
                   </FormControl>
                   <FormControl>
                     <FormLabel>Precio</FormLabel>

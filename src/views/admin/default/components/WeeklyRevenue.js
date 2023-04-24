@@ -18,9 +18,10 @@ import moment from "moment";
 import { MdBarChart } from "react-icons/md";
 import { constants } from "Constants";
 import DatePicker from "react-multi-date-picker";
+import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 
 export default function WeeklyRevenue(props) {
-  const { ...rest } = props;
+  const {year,setYear, ...rest } = props;
 
   // Chakra Color Mode
   const textColor = useColorModeValue("secondaryGray.900", "white");
@@ -37,13 +38,14 @@ export default function WeeklyRevenue(props) {
 
   const [dataTable, setDataTable] = useState([]);
   const [monthPrices, setMonthPrices] = useState()
-  const [year, setYear] = useState(moment().format("YYYY"))
   const session = JSON.parse(sessionStorage.getItem("login-user"));
+  
+  const formatYear = moment(year).format("YYYY")
 
   const getDataOfMonthsByYear = async () => {
     setMonthPrices([])
-
-    const response = await fetch(`${constants.urlLocal}month/${session.user}/${year}`, {
+    setYear(formatYear)
+    const response = await fetch(`${constants.urlLocal}month/${session.user}/${formatYear}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -57,10 +59,10 @@ export default function WeeklyRevenue(props) {
     } else {
       console.log("error")
     }
-    console.log(monthPrices)
     setDataTable(json);
 
   };
+  
   useEffect(() => {
     getDataOfMonthsByYear();
   }, [year]);
@@ -84,9 +86,9 @@ export default function WeeklyRevenue(props) {
   days.sort((a, b) => a - b);
 
   const data2 = [];
-  for (let i = 0; i < 12; i++) {
-    data2.push(Math.floor(Math.random() * 500));
-  }
+  // for (let i = 0; i < 12; i++) {
+  //   data2.push(Math.floor(Math.random() * 500));
+  // }
 
   const barChartDataConsumption = [
     {
@@ -95,18 +97,27 @@ export default function WeeklyRevenue(props) {
     },
     {
       name: "GASTOS NETOS",
-      data: data2,
+      data: [data2],
     },
   ];
   
-   const barChartOptionsConsumption = {
+  const barChartOptionsConsumption = {
     chart: {
       stacked: false,
       toolbar: {
-        show: false,
+        show: true,
       },
     },
     tooltip: {
+      custom: function({series, seriesIndex, dataPointIndex, w}) {
+        var data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
+        return (
+        '<div class="arrow_box">' +
+          '<span>' + 'Gananacias netas: ' + data + ' €' + '</span>' +
+          '</span>' +
+        '</div>'
+        );
+      },
       style: {
         fontSize: "12px",
         fontFamily: undefined,
@@ -121,7 +132,7 @@ export default function WeeklyRevenue(props) {
     },
     xaxis: {
       categories: ['ENE', 'FEB', 'MAR', 'ABR', 'MAY', 'JUN', 'JUL', 'AGO', 'SEP', 'OCT', 'NOV', 'DIC'],      
-      show: false,
+      show: true,
       labels: {
         show: true,
         style: {
@@ -138,10 +149,10 @@ export default function WeeklyRevenue(props) {
       },
     },
     yaxis: {
-      show: false,
+      show: true,
       color: "black",
       labels: {
-        show: false,
+        show: true,
         style: {
           colors: "#A3AED0",
           fontSize: "14px",
@@ -186,7 +197,6 @@ export default function WeeklyRevenue(props) {
     },
   };
   
-
   return (
     <Card align='center' direction='column' w='100%' {...rest}>
       <Flex align='center' w='100%' px='15px' py='10px'>
@@ -198,12 +208,47 @@ export default function WeeklyRevenue(props) {
           lineHeight='100%'>
           Ganancias anuales
         </Text>
-        <DatePicker
-          currentDate={year}
-          onlyYearPicker
-          onChange={(date) => setYear(date)}
-        />
+        {/* button with left arrow */}
         <Button
+          align='center'
+          justifyContent='center'
+          bg={bgButton}
+          _hover={bgHover}
+          _focus={bgFocus}
+          _active={bgFocus}
+          w='37px'
+          h='37px'
+          lineHeight='100%'
+          borderRadius='10px'
+          marginRight='10px'
+          onClick={() => setYear(moment(formatYear).subtract(1, "year").format("YYYY"))}
+          {...rest}>
+          <Icon as={MdKeyboardArrowLeft} color={iconColor} w='24px' h='24px' />
+        </Button>
+
+        <Text color={textColor} fontSize='xl' fontWeight='700' lineHeight='100%'>
+          {formatYear}
+        </Text>
+
+        {/* button with right arrow */}
+        <Button
+          align='center'
+          justifyContent='center'
+          bg={bgButton}
+          _hover={bgHover}
+          _focus={bgFocus}
+          _active={bgFocus}
+          w='37px'
+          h='37px'
+          lineHeight='100%'
+          borderRadius='10px'
+          marginLeft='10px'
+          onClick={() => setYear(moment(formatYear).add(1, "year").format("YYYY"))}
+          {...rest}>
+          <Icon as={MdKeyboardArrowRight} color={iconColor} w='24px' h='24px' />
+        </Button>
+
+        {/* <Button
           align='center'
           justifyContent='center'
           bg={bgButton}
@@ -216,7 +261,7 @@ export default function WeeklyRevenue(props) {
           borderRadius='10px'
           {...rest}>
           <Icon as={MdBarChart} color={iconColor} w='24px' h='24px' />
-        </Button>
+        </Button> */}
       </Flex>
 
       <Box h='240px' mt='auto'>

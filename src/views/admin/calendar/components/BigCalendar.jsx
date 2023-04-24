@@ -9,6 +9,9 @@ import moment from "moment";
 import 'moment/locale/es';
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import { useHistory } from "react-router-dom";
+import { BsCircleFill } from "react-icons/bs";
+import { CgLayoutGrid } from "react-icons/cg";
+import {Year} from "./Year";
 
 export default function BigCalendar(props) {
   const {events, ...rest } = props;
@@ -74,26 +77,21 @@ export default function BigCalendar(props) {
               work_week: 'Semana laboral',
               showMore: total => `+ Ver más (${total})`    
           }}
-          views={['month', 'week']}
-          components={{ toolbar: _props => <CustomToolbar {..._props} handleSelectSlot={handleSelectSlot} />,
+          views={{
+            month: true,
           }}
-      />
-      {/* <Calendar
-      tileClassName={({ date, view }) => {
-        if(value.find(x=>x===moment(date).format("DD/MM/YYYY"))){
-        return  'highlight'
+          components={{ 
+            toolbar: _props => <CustomToolbar {..._props} handleSelectSlot={handleSelectSlot} />,
+            event: _props => {
+            return (
+              <div style={{display: 'flex'}}>
+                  <BsCircleFill color={_props.event.randomColor} style={{marginRight: 5}}/>
+                  {_props.event.nombre_viajero}
+              </div>
+            )
+          }}
         }
-      }}
-        onChange={onChange}
-        value={new Date()}
-        selectRange={true}
-        view={"month"}
-        disabled={true}
-        selectMultiple={true}
-        tileContent={<Text color='brand.500'></Text>}
-        prevLabel={<Icon as={MdChevronLeft} w='24px' h='24px' mt='4px' />}
-        nextLabel={<Icon as={MdChevronRight} w='24px' h='24px' mt='4px' />}
-      /> */}
+      />
     </Card>
   );
 }
@@ -132,6 +130,13 @@ const CustomToolbar = (toolbar) => {
       monthView[0].classList.remove('active')
   };
 
+  const goToYear = () => {
+      toolbar.onView('year');
+      weekView[0].classList.remove('active')
+      monthView[0].classList.remove('active')
+  };
+
+
 
   return (
     <div>
@@ -144,8 +149,7 @@ const CustomToolbar = (toolbar) => {
             </span>
 
             {/* <span className="rbc-btn-group">
-                <button type="button" className="rbc-week-view" onClick={goToWeek}>Semana</button>
-                <Button type="button" className="rbc-week-view rbc-toolbar active" onClick={goToWeek}>Semana</Button>
+                <Button type="button" className="rbc-week-view rbc-toolbar active" onClick={goToYear}>Anual</Button>
                 <Button type="button" className="rbc-months-view rbc-toolbar" onClick={goToMonth}>Mes</Button>
             </span> */}
         </div>

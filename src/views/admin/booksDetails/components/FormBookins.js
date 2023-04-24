@@ -43,11 +43,13 @@ export const FormBookins = (props) => {
     const [bebes, setBebes] = useState(0)
     const [alojamiento, setAlojamiento] = useState('')
     const [precio, setPrecio] = useState('')
+    const [nombreViajero, setNombreViajero] = useState('')
     const [disabled, setDisabled] = useState(true)
     const [loading, setLoading] = useState(false)
 
     const [book, setBook] = useState({})
     const [range, setRange] = useState([])
+    const [properties, setProperties] = useState([])
 
     const history = useHistory();
 
@@ -69,6 +71,7 @@ export const FormBookins = (props) => {
                 fechaAlta: data.fecha_alta,
                 fechaEntrada: data.fecha_entrada,
                 fechaSalida: data.fecha_salida,
+                nombreViajero: data.nombre_viajero,
                 estado: data.estado,
                 adultos: data.adultos,
                 ninos: data.ninos,
@@ -84,6 +87,7 @@ export const FormBookins = (props) => {
         setFechaEntrada(data.fecha_entrada);
         setFechaSalida(data.fecha_salida);
         setEstado(data.estado);
+        setNombreViajero(data.nombre_viajero);
         setAdultos(data.adultos);
         setNinos(data.ninos);
         setBebes(data.bebes);
@@ -105,9 +109,25 @@ export const FormBookins = (props) => {
         }
     };
 
+    const getProperties = async () => {
+        try {
+          const response = await fetch(`${constants.urlLocal}property/${session.user}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          const data = await response.json();
+          setProperties(data);
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
     useEffect(() => {
         if (history.location.state) {
             getBookById(history.location.state.book._id);
+            getProperties();
             getRange();
         } else {
             history.push("/admin/books");
@@ -122,10 +142,11 @@ export const FormBookins = (props) => {
             },
             body: JSON.stringify({
                 localizador,
-                fechaAlta: new Date(fechaAlta).toISOString(),
-                fechaEntrada: new Date(fechaEntrada).toISOString(),
-                fechaSalida: new Date(fechaSalida).toISOString(),
+                fecha_alta: new Date(fechaAlta).toISOString(),
+                fecha_entrada: new Date(fechaEntrada).toISOString(),
+                fecha_salida: new Date(fechaSalida).toISOString(),
                 estado,
+                nombre_viajero: nombreViajero,
                 adultos,
                 ninos,
                 bebes,
@@ -309,6 +330,17 @@ export const FormBookins = (props) => {
                         <option value='confirmada'>Confirmada</option>
                     </Select>
                 </FormControl>
+                {estado === "confirmada" ?
+                    <FormControl id="alojamiento" isRequired>
+                        <FormLabel>Nombre viajero</FormLabel>
+                        <Input color={textColor}
+                            type="text"
+                            disabled={disabled}
+                            value={nombreViajero}
+                            onChange={(e) => setNombreViajero(e.target.value)}
+                        />
+                    </FormControl>
+                : null}
                 <FormControl id="adultos" isRequired>
                     <FormLabel>Adultos</FormLabel>
                     <Input color={textColor}
@@ -338,13 +370,16 @@ export const FormBookins = (props) => {
                 </FormControl>
                 <FormControl id="alojamiento" isRequired>
                     <FormLabel>Alojamiento</FormLabel>
-                    <Input color={textColor}
-                        type="text"
-                        disabled={disabled}
-                        value={alojamiento}
-                        onChange={(e) => setAlojamiento(e.target.value
-                        )}
-                    />
+                    <Select onChange={(e) => setAlojamiento(e.target.value)}
+                    color={textColor}
+                    disabled={disabled}
+                    value={alojamiento}
+                    >
+                        <option value=''>Selecciona un alojamiento</option>
+                        {properties.map((property) => (
+                            <option key={property._id} value={property.name}>{property.name}</option>
+                        ))}
+                    </Select>
                 </FormControl>
                 <FormControl id="precio" isRequired>
                     <FormLabel>Precio</FormLabel>

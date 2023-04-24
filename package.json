@@ -1,5 +1,5 @@
 {
-  "homepage": "https://horizon-ui.com/",
+  "homepage": "#/auth/login",
   "name": "holidays-homepage",
   "version": "1.0.1",
   "private": true,
@@ -22,6 +22,7 @@
     "babel-register": "^6.26.0",
     "framer-motion": "^4.1.17",
     "moment": "^2.29.4",
+    "rc-year-calendar": "^1.0.2",
     "react": "17.0.2",
     "react-apexcharts": "^1.4.0",
     "react-big-calendar": "^1.6.8",

@@ -63,13 +63,14 @@ function SignIn() {
       }),
     });
     const json = await response.json();
-
+    console.log(json)
     try {
       if (response.ok) {
-        setAlert({ open: false, message: "", classes: "success" });
         // set token to localStorage
         sessionStorage.setItem("login-user", JSON.stringify(json));
-        history.push("/resumen-principal", { state: { user: json } });
+        history.push("/admin/resumen-principal");
+        
+        setAlert({ open: false, message: "", classes: "success" });
         setLoading(false)
       } else {
         setAlert({ open: true, message: json.message, classes: "error" });

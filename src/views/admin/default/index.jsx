@@ -53,6 +53,11 @@ export default function UserReports() {
   const [events, setEvents] = useState([{}]);
   const [books, setBooks] = useState([])
   const [sumOfAllBooks, setSumOfAllBooks] = useState()
+
+  const [year, setYear] = useState(new Date())
+  const [clientsPerYear, setClientsPerYear] = useState([])
+
+
   const session = JSON.parse(sessionStorage.getItem('login-user'))
 
   const getBooks = async () => {
@@ -64,35 +69,69 @@ export default function UserReports() {
     });
     const json = await response.json();
     setBooks(json);
-    const sum = json.reduce((acc, item) => {
-      return acc + item.precio
-    }, 0)
-    const sum1 = sum / 1.12
-    // redonde sum1 a 2 decimales
-    const sum2 = Math.round(sum1 * 100) / 100
-    setSumOfAllBooks(sum2)
+    getSumOfAllBooks()
+    getBooksPerYear()
   };
+
+  const getSumOfAllBooks =  () => {
+    // sum if status is confirmed and year is the same
+    const sum = books.reduce((acc, item) => {
+      if (item.estado === "confirmada" && new Date(year).getFullYear() === new Date(item.fecha_entrada).getFullYear()) {      
+        return acc + item.precio
+      } else {
+        return acc 
+      }
+    }, 0)
+    setSumOfAllBooks(sum)
+  }
+
+  // books per years
+  const getBooksPerYear = () => {
+    const booksPerYear = books.reduce((acc, item) => {
+      if (item.estado === "confirmada") {
+        const year = new Date(item.fecha_entrada).getFullYear()
+        if (acc[year]) {
+          acc[year] = acc[year] + 1
+        } else {
+          acc[year] = 1
+        }
+      }
+      return acc
+    }, {})
+    setClientsPerYear(booksPerYear)
+  }
+
+
+  useEffect(() => {
+    getSumOfAllBooks()
+    getBooksPerYear()
+  }, [books, year])
+  
+  
   useEffect(() => {
     getBooks();
   }, []);
 
   useEffect(() => {
-      const eventsParse = books && books.map((item) => {
-        return {
-          _id: item._id,
-          localizador: item.localizador,
-          start: item.fecha_entrada ? new Date(item.fecha_entrada) : null ,
-          end: item.fecha_salida ? new Date(item.fecha_salida) : null,
-          title: " ",
-          color: item.estado === "confirmada"
-              ? " #01b574"
-              : item.estado=== "pendiente"
-              ? "#ffb547"
-              : null,
-        };
-      });
-      setEvents(eventsParse);
-    }, [books]);
+    const eventsParse = books && books.map((item) => {
+      const randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
+      return {
+        _id: item._id,
+        localizador: item.localizador,
+        nombre_viajero: item.nombre_viajero,
+        randomColor: randomColor,
+        start: item.fecha_entrada ? new Date(item.fecha_entrada) : null ,
+        end: item.fecha_salida ? new Date(item.fecha_salida) : null,
+        title: " ",
+        color: item.estado === "confirmada"
+            ? " #01b574"
+            : item.estado=== "pendiente"
+            ? "#ffb547"
+            : null,
+      };
+    });
+    setEvents(eventsParse);
+  }, [books]);
 
   return (
     <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
@@ -114,7 +153,7 @@ export default function UserReports() {
           name='Ganancias anuales'
           value={sumOfAllBooks + ' €'}
         />
-        <MiniStatistics
+        {/* <MiniStatistics
           startContent={
             <IconBox
               w='56px'
@@ -127,7 +166,7 @@ export default function UserReports() {
           }
           name='Gastos anuales'
           value={sumOfAllBooks + ' €'}
-        />
+        /> */}
         {/* <MiniStatistics growth='+23%' name='Sales' value='$574.34' /> */}
 
         {/* <MiniStatistics
@@ -154,13 +193,13 @@ export default function UserReports() {
             />
           }
           name='Clientes totales'
-          value={books.length}
+          value={clientsPerYear[new Date(year).getFullYear()]}
         />
       </SimpleGrid>
 
       <SimpleGrid columns={{ base: 1, md: 1, xl: 2 }} gap='20px' mb='20px'>
         {/* <TotalSpent /> */}
-        <WeeklyRevenue />
+        <WeeklyRevenue year={year} setYear={setYear}/>
         <SimpleGrid columns={{ base: 1, md: 1, xl: 1 }} gap='20px' mb='20px'>
           <MiniCalendar h='100%' minW="100%" events={events} />
         </SimpleGrid>  

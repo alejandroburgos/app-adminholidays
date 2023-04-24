@@ -4,6 +4,10 @@ export const columnsDataCheck = [
     accessor: "localizador",
   },
   {
+    Header: "NOMBRE VIAJERO",
+    accessor: "nombreViajero",
+  },
+  {
     Header: "FECHA ALTA",
     accessor: "fechaAlta",
   },
@@ -46,8 +50,8 @@ export const columnsDataComplex = [
     accessor: "localizador",
   },
   {
-    Header: "FECHA ALTA",
-    accessor: "fechaAlta",
+    Header: "NOMBRE VIAJERO",
+    accessor: "nombreViajero",
   },
   {
     Header: "FECHA ENTRADA",

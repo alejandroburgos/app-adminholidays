@@ -36,24 +36,21 @@ export default function GeneralInformation(props) {
     }
   };
 
-  const deleteProperty = async () => {
-    const response = await fetch(`${constants.urlLocal}property/${session.user}`, {
+  const deleteProperty = async (id) => {
+    const response = await fetch(`${constants.urlLocal}property/${id}/${session.user}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        name: name,
-      }),
     });
     const data = await response.json();
-    console.log(data);
+    setProperties(data.data);
   };
 
   useEffect(() => {
     getProperties();
-  }, [properties]);
-  
+  }, []);
+  console.log(properties)
   return (
     <Card mb={{ base: "0px", "2xl": "20px" }} {...rest}>
       <Text
@@ -68,17 +65,20 @@ export default function GeneralInformation(props) {
         Aquí puedes encontrar información general sobre tu perfil
       </Text>
       <SimpleGrid columns='2' gap='20px'>
-        {properties && properties.map((p, i) => (
+        {properties && properties?.map((p, i) => (
           <Information 
           key={i}
           boxShadow={cardShadow}
           title='Propiedad'
           value={p.name}
+          id={p._id}
+          deleteProperty={deleteProperty}
           />
         ))}
         <AddInformation
           boxShadow={cardShadow}
           session={session}
+          setProperties={setProperties}
           title='Propiedad'
           value='Finca Los Acebuches'/>
         {/* <Information

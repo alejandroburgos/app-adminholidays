@@ -8,7 +8,7 @@ import { useState } from "react";
 import { MdDeleteOutline } from "react-icons/md";
 
 export default function AddInformation(props) {
-  const { session, ...rest } = props;
+  const { session,setProperties, ...rest } = props;
   // Chakra Color Mode
   const textColorPrimary = useColorModeValue("secondaryGray.900", "white");
   const textColorSecondary = "gray.400";
@@ -19,17 +19,22 @@ export default function AddInformation(props) {
 
   // post property
   const addProperty = async () => {
-    const response = await fetch(`${constants.urlLocal}property/${session.user}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: name,
-      }),
-    });
-    const data = await response.json();
-    console.log(data);
+    try {
+      const response = await fetch(`${constants.urlLocal}property/${session.user}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: name,
+        }),
+      });
+      const data = await response.json();
+      setProperties(data.data);
+      onClose();
+    } catch (error) {
+      console.log(error);
+    }
   };
   
 

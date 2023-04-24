@@ -6,7 +6,7 @@ import React from "react";
 import { MdDeleteOutline } from "react-icons/md";
 
 export default function Information(props) {
-  const { title, value, ...rest } = props;
+  const { title, value,id, deleteProperty, ...rest } = props;
   // Chakra Color Mode
   const textColorPrimary = useColorModeValue("secondaryGray.900", "white");
   const textColorSecondary = "gray.400";
@@ -23,7 +23,7 @@ export default function Information(props) {
 
           <MdDeleteOutline style={{float: 'right', cursor: 'pointer'}} 
             onClick={() => {
-              console.log("delete")
+              deleteProperty(id);
             }}
             />
         </Text>

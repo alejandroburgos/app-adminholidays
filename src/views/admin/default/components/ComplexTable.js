@@ -11,6 +11,7 @@ import {
   Tr,
   useColorModeValue,
   Tooltip,
+  IconButton,
 } from "@chakra-ui/react";
 import React, { useEffect, useMemo, useState } from "react";
 import {
@@ -28,12 +29,16 @@ import Menu from "components/menu/MainMenu";
 import { MdCheckCircle, MdCancel, MdOutlineError } from "react-icons/md";
 import { constants } from "Constants";
 import { useHistory } from "react-router-dom";
+import { CustomRadioGroup } from "components/radioGroup/CustomRadioGroup";
+import { BsCheckSquareFill, BsExclamationSquareFill, BsSquareFill } from "react-icons/bs";
 
 export default function ColumnsTable(props) {
   const { columnsData, tableData, addBook } = props;
   const columns = useMemo(() => columnsData, [columnsData]);
   const data = useMemo(() => tableData, [tableData]);
   const [books, setBooks] = useState([])
+  const [statusFilter, setStatusFilter] = useState('all')
+  const [filtered, setFiltered] = useState([])
 
   const tableInstance = useTable(
     {
@@ -70,12 +75,25 @@ export default function ColumnsTable(props) {
     });
     const json = await response.json();
     setBooks(json);
+    setFiltered(json)
 
   };
 
   useEffect(() => {
     getBooks();
   }, []);
+
+  const filterByStatus = (status) => {
+    setStatusFilter(status)
+    if (status === 'all') {
+      setFiltered(books)
+    } else {
+      const filtered = books.filter(book => book.estado === status)
+      setFiltered(filtered)
+    }
+  }
+  
+
 
   const goToBook = (book) => {
     history.push({
@@ -98,6 +116,12 @@ export default function ColumnsTable(props) {
           lineHeight='100%'>
           Reservas
         </Text>
+        {/* filter radio group */}
+        <div>
+          <IconButton variant={statusFilter === 'confirmada' ? 'solid' : 'outline'}  colorScheme='green' aria-label='Confirmada' onClick={() => filterByStatus('confirmada')} icon={<BsCheckSquareFill />} />
+          <IconButton variant={statusFilter === 'pendiente' ? 'solid' : 'outline'}colorScheme='yellow' aria-label='Pendiente' onClick={() => filterByStatus('pendiente')} icon={<BsExclamationSquareFill />} />
+          <IconButton variant={statusFilter === 'all' ? 'solid' : 'outline'} colorScheme='blue' aria-label='Todo' onClick={() => filterByStatus('all')} icon={<BsSquareFill />} />
+        </div>
         <Menu addBook={addBook} setBooks={setBooks} />
       </Flex>
       <Table {...getTableProps()} variant='simple' color='gray.500' mb='24px' size="sm">
@@ -122,8 +146,8 @@ export default function ColumnsTable(props) {
             </Tr>
           ))}
         </Thead>
-        <Tbody  className='hover-table'>
-          {books && books.map((row, index) => {
+        <Tbody className='hover-table'>
+          {filtered && filtered.map((row, index) => {
             return (
               <Tr key={index}>
                 <Td color={textColor} fontSize='sm' 
@@ -132,9 +156,15 @@ export default function ColumnsTable(props) {
                         <b>{row.localizador}</b>
                       </Tooltip>
                 </Td>
-                <Td color={textColor} fontSize='sm'>
-                  {moment(row.fecha_alta).format("DD/MM/YYYY")}
+                {row.estado !== 'confirmada' ? <Td color={textColor} fontSize='sm'>
+                  <Tooltip hasArrow label='Si el estado no es confirmado aparece la fecha de alta'>
+                    {moment(row.fecha_alta).format("DD/MM/YYYY")}
+                  </Tooltip>
+                </Td> : 
+                <Td color={textColor} fontSize='sm'> 
+                  {row.nombre_viajero}
                 </Td>
+                }
                 <Td color={textColor} fontSize='sm'>
                 {moment(row.fecha_entrada).format("DD/MM/YYYY")}
                 </Td>
