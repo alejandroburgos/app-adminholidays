@@ -19,39 +19,7 @@ export default function Dashboard(props) {
   const sessionUser = JSON.parse(sessionStorage.getItem("login-user"));
   const [existUser, setExistUser] = useState(false);
 
-  const getUser = async () => {
-    const response = await fetch(`${constants.urlLocal}user/${sessionUser.user.toLowerCase()}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-    });
-    try {
-      const json = await response.json();
-      if (json.ok) {
-        // set token to sessionStorage
-        sessionStorage.setItem("token", json.token);
-        setExistUser(true);
-      } else {
-        // redirect to login
-        window.location.href = "#/auth/login";
 
-        // detele localStorage
-        setExistUser(false);
-        sessionStorage.removeItem("token");
-      }
-    } catch (error) {
-      console.log("error", error);
-    }
-  };
-
-  useEffect(() => {
-    if (sessionUser) {
-      getUser();
-    }
-    getUser();
-  }, [sessionUser]);
   // functions for changing the states from components
   const getRoute = () => {
     return window.location.pathname !== "/admin/full-screen-maps";

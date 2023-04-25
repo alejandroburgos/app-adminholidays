@@ -193,7 +193,7 @@ export default function UserReports() {
             />
           }
           name='Clientes totales'
-          value={clientsPerYear[new Date(year).getFullYear()]}
+          value={clientsPerYear[moment(year).format('YYYY')]}
         />
       </SimpleGrid>
 

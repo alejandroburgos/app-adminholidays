@@ -40,7 +40,8 @@ export default function Auth() {
   const authBg = useColorModeValue("white", "navy.900");
   document.documentElement.dir = "ltr";
 
-  const token = JSON.parse(sessionStorage.getItem("token"));
+  const token = sessionStorage.getItem("token");
+  console.log(token)
   return (
     <Box>
       <SidebarContext.Provider
@@ -63,11 +64,11 @@ export default function Auth() {
             <Box mx='auto' minH='100vh'>
               <Switch>
                 {getRoutes(routes)}
-                {!token && <Redirect
+                {/* {!token && <Redirect
                   from='/auth'
                   to='/auth/sign-in
                   '
-                />}
+                />} */}
               </Switch>
             </Box>
           ) : null}

@@ -27,6 +27,7 @@ import illustration from "assets/img/auth/auth.png";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { RiEyeCloseLine } from "react-icons/ri";
 import { useHistory } from "react-router-dom";
+import { useEffect } from "react";
 
 function SignIn() {
   // Chakra color mode
@@ -67,10 +68,10 @@ function SignIn() {
     try {
       if (response.ok) {
         // set token to localStorage
+        getUser(json);
         sessionStorage.setItem("login-user", JSON.stringify(json));
-        history.push("/admin/resumen-principal");
         
-        setAlert({ open: false, message: "", classes: "success" });
+        setAlert({ open: false, message: "Iniciando sesión...", classes: "success" });
         setLoading(false)
       } else {
         setAlert({ open: true, message: json.message, classes: "error" });
@@ -82,7 +83,30 @@ function SignIn() {
       setAlert({ open: true, message: error, classes: "error" });
     }
   };
+  const getUser = async (user) => {
+    const response = await fetch(`${constants.urlLocal}user/${user.user.toLowerCase()}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
+    try {
+      const json = await response.json();
+      if (json.ok) {
+        // set token to sessionStorage
+        sessionStorage.setItem("token", json.token);
+        history.push("/admin/resumen-principal");
 
+      } else {
+        // redirect to login
+        window.location.href = "#/auth/login";
+        sessionStorage.removeItem("token");
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
   return (
     <DefaultAuth illustrationBackground={illustration} image={illustration}>
       <Flex
