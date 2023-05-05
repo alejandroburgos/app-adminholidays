@@ -11,13 +11,13 @@ import Card from "components/card/Card.js";
 import moment from "moment";
 import 'moment/locale/es';
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { BsCircleFill } from "react-icons/bs";
 export default function MiniCalendar(props) {
   const {events, ...rest } = props;
 
   const localizer = momentLocalizer(moment);
-  const history = useHistory();
+  const history = useNavigate();
   
   const handleEventSelection = (e) => {
     console.log(e)

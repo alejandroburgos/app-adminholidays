@@ -25,7 +25,7 @@ import { MdNotificationsNone, MdInfoOutline } from 'react-icons/md';
 import { FaEthereum } from 'react-icons/fa';
 import routes from 'routes.js';
 import { ThemeEditor } from './ThemeEditor';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 export default function HeaderLinks(props) {
 	const { secondary } = props;
 	// Chakra Color Mode
@@ -43,18 +43,16 @@ export default function HeaderLinks(props) {
 	);
 	const borderButton = useColorModeValue('secondaryGray.500', 'whiteAlpha.200');
 
-	const history = useHistory();
+	const navigate = useNavigate();
 	const goToProfile = () => {
-		history.push({
+		navigate.push({
 			pathname: '/admin/perfil',
 		});
 	};
 	const singOut = () => {
 		sessionStorage.removeItem('token');
 		sessionStorage.removeItem('login-user');
-		history.push({
-			pathname: '/auth/sign-in',
-		});
+		navigate('/auth/login');
 	};
 
 	// get session storage

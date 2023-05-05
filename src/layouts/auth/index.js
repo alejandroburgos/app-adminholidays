@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import routes from "routes.js";
+import { useRoutes } from 'react-router-dom';
 
 // Chakra imports
 import { Box, useColorModeValue } from "@chakra-ui/react";
@@ -19,11 +20,12 @@ export default function Auth() {
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.layout === "/auth") {
+        const Component = prop.component;
         return (
           <Route
-            path={prop.layout + prop.path}
-            component={prop.component}
             key={key}
+            path={prop.path}
+            element={<Component />}
           />
         );
       }
@@ -39,9 +41,6 @@ export default function Auth() {
   };
   const authBg = useColorModeValue("white", "navy.900");
   document.documentElement.dir = "ltr";
-
-  const token = sessionStorage.getItem("token");
-  console.log(token)
   return (
     <Box>
       <SidebarContext.Provider
@@ -62,14 +61,10 @@ export default function Auth() {
           transitionTimingFunction='linear, linear, ease'>
           {getRoute() ? (
             <Box mx='auto' minH='100vh'>
-              <Switch>
+              <Routes>
                 {getRoutes(routes)}
-                {/* {!token && <Redirect
-                  from='/auth'
-                  to='/auth/sign-in
-                  '
-                />} */}
-              </Switch>
+                {/* <Route path='auth/*' element={<Navigate to='/auth/login' />} /> */}
+              </Routes>
             </Box>
           ) : null}
         </Box>

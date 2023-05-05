@@ -12,7 +12,7 @@ import {
   Select,
   Spinner
 } from "@chakra-ui/react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { constants } from "Constants";
 import Card from "components/card/Card";
 import { ModalConfirmDelete } from "./ModalConfirmDelete";
@@ -51,7 +51,7 @@ export const FormBookins = (props) => {
     const [range, setRange] = useState([])
     const [properties, setProperties] = useState([])
 
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const session = JSON.parse(sessionStorage.getItem('login-user'))
 
@@ -125,12 +125,12 @@ export const FormBookins = (props) => {
       };
 
     useEffect(() => {
-        if (history.location.state) {
-            getBookById(history.location.state.book._id);
+        if (navigate.location.state) {
+            getBookById(navigate.location.state.book._id);
             getProperties();
             getRange();
         } else {
-            history.push("/admin/books");
+            navigate.push("/admin/books");
         }
     }, []);
 
@@ -155,7 +155,7 @@ export const FormBookins = (props) => {
             }),
         });
         const data = await response.json();
-        history.push("/admin/books");
+        navigate.push("/admin/books");
     };
 
     const deleteBook = async (id) => {
@@ -166,7 +166,7 @@ export const FormBookins = (props) => {
             },
         });
         const data = await response.json();
-        history.push("/admin/books");
+        navigate.push("/admin/books");
     };
 
     const cancelDelete = () => {

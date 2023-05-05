@@ -6,18 +6,25 @@ import Navbar from "components/navbar/NavbarAdmin.js";
 import Sidebar from "components/sidebar/Sidebar.js";
 import { SidebarContext } from "contexts/SidebarContext";
 import React, { useEffect, useState } from "react";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { useNavigate, Route, Routes } from "react-router-dom";
 import routes from "routes.js";
-import { constants } from "./../../Constants";
 
 // Custom Chakra theme
 export default function Dashboard(props) {
   const { ...rest } = props;
+
   // states and functions
   const [fixed] = useState(false);
   const [toggleSidebar, setToggleSidebar] = useState(false);
-  const sessionUser = JSON.parse(sessionStorage.getItem("login-user"));
-  const [existUser, setExistUser] = useState(false);
+  
+  const navigate = useNavigate();
+  const user = JSON.parse(sessionStorage.getItem("login-user"));
+  const token = sessionStorage.getItem("token");
+  useEffect(() => {
+    if (!user.ok) {
+      navigate("/auth/login");
+    }
+  }, [user, navigate]);
 
 
   // functions for changing the states from components
@@ -37,8 +44,6 @@ export default function Dashboard(props) {
         if (categoryActiveRoute !== activeRoute) {
           return categoryActiveRoute;
         }
-      } else if (routes[i].hidden) {
-        return routes[i].name
       } else {
         if (
           window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
@@ -62,9 +67,6 @@ export default function Dashboard(props) {
         if (categoryActiveNavbar !== activeNavbar) {
           return categoryActiveNavbar;
         }
-        
-      } else if (routes[i].hidden) {
-        return null
       } else {
         if (
           window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
@@ -88,8 +90,6 @@ export default function Dashboard(props) {
         if (categoryActiveNavbar !== activeNavbar) {
           return categoryActiveNavbar;
         }
-      } else if (routes[i].hidden) {
-        return null
       } else {
         if (
           window.location.href.indexOf(routes[i].layout + routes[i].path) !== -1
@@ -103,17 +103,25 @@ export default function Dashboard(props) {
   const getRoutes = (routes) => {
     return routes.map((prop, key) => {
       if (prop.layout === "/admin") {
+        const Component = prop.component;
         return (
           <Route
-            path={prop.layout + prop.path}
-            component={prop.component}
+            path={prop.path}
             key={key}
+            element={<Component  />}
           />
         );
       }
+      if (prop.collapse) {
+        return getRoutes(prop.items);
+      }
+      if (prop.category) {
+        return getRoutes(prop.items);
+      } else {
+        return null;
+      }
     });
   };
-  document.documentElement.dir = "ltr";
   const { onOpen } = useDisclosure();
   return (
     <Box>
@@ -157,11 +165,10 @@ export default function Dashboard(props) {
               pe='20px'
               minH='100vh'
               pt='50px'>
-              <Switch>
+              <Routes>
                 {getRoutes(routes)}
-                  <Redirect from='/' to='/admin/resumen-principal' />
-                
-              </Switch>
+                {/* <Navigate path='/admin' to='/admin/dashboard' /> */}
+              </Routes>
             </Box>
           ) : null}
           <Box>

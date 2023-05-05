@@ -28,7 +28,7 @@ import Menu from "components/menu/MainMenu";
 // Assets
 import { MdCheckCircle, MdCancel, MdOutlineError } from "react-icons/md";
 import { constants } from "Constants";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { CustomRadioGroup } from "components/radioGroup/CustomRadioGroup";
 import { BsCheckSquareFill, BsExclamationSquareFill, BsSquareFill } from "react-icons/bs";
 
@@ -64,7 +64,7 @@ export default function ColumnsTable(props) {
   const borderColor = useColorModeValue("gray.200", "whiteAlpha.100");
 
   const session = JSON.parse(sessionStorage.getItem('login-user'))
-  const history = useHistory()
+  const navigate = useNavigate()
   // get all books
   const getBooks = async () => {
     const response = await fetch(`${constants.urlLocal}books/${session.user}`, {
@@ -96,7 +96,7 @@ export default function ColumnsTable(props) {
 
 
   const goToBook = (book) => {
-    history.push({
+    navigate.push({
       pathname: `/admin/reserva/${book.localizador}`,
       state: { book: book }
     })  

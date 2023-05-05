@@ -75,13 +75,13 @@ const routes = [
     component: Profile,
     hidden: true
   },
-  ,{
+  {
     name: "Sign In",
     layout: "/auth",
-    path: "/sign-in",
+    path: "/login",
     icon: <Icon as={MdLock} width='20px' height='20px' color='inherit' />,
-    component: SignInCentered
-  },
+    component: SignInCentered,
+  }
   // {
   //   name: "Data Tables",
   //   layout: "/admin",

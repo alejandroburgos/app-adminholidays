@@ -8,7 +8,7 @@ import Card from "components/card/Card.js";
 import moment from "moment";
 import 'moment/locale/es';
 import { ChevronLeftIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { BsCircleFill } from "react-icons/bs";
 import { CgLayoutGrid } from "react-icons/cg";
 import {Year} from "./Year";
@@ -17,10 +17,10 @@ export default function BigCalendar(props) {
   const {events, ...rest } = props;
 
   const localizer = momentLocalizer(moment);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleEventSelection = (e) => {
-    history.push({
+    navigate.push({
       pathname: `/admin/reserva/${e.localizador}`,
       state: { book: e }
     }) 
